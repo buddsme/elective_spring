@@ -48,7 +48,7 @@
 
         <div class="row">
             <div class ="col-lg-3">
-                <a class="btn btn-primary active mb-2" href="/courses/addCourse" role="button">Add Course</a>
+                <a class="btn btn-primary active mb-2" th:href="@{/admin/courses/addCourse}" role="button">Add Course</a>
             </div>
         </div>
 
@@ -88,10 +88,10 @@
                     <td th:text = "${course.getDuration()}"></td>
                     <td th:text = "${course.getDescription()}"></td>
                     <td>
-                        <a th:href = "@{/courses/edit/{id}(id=${course.idCourse})}"
+                        <a th:href = "@{/admin/courses/edit/{id}(id=${course.idCourse})}"
                         class="btn btn-primary">Update</a>
 
-                        <a th:href = "@{/courses/delete/{id}(id=${course.idCourse})}"
+                        <a th:href = "@{/admin/courses/delete/{id}(id=${course.idCourse})}"
                            class="btn btn-danger">Delete</a>
                     </td>
                 </tr>

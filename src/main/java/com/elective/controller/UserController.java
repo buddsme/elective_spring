@@ -1,11 +1,9 @@
 package com.elective.controller;
 
 import com.elective.entity.User;
-import com.elective.repositories.UserRepository;
 import com.elective.service.CourseService;
 import com.elective.service.TopicService;
 import com.elective.service.UserService;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,24 +36,5 @@ public class UserController {
         return new ModelAndView("redirect:/courses");
     }
 
-    @GetMapping("/teachers")
-    public ModelAndView listTeachers(Model model){
-        model.addAttribute("teachers", userService.getAllTeachers());
-        return new ModelAndView("teachers");
-    }
 
-    @GetMapping("/teachers/addTeacher")
-    public ModelAndView addCourseForm(Model model){
-
-        User teacher = new User();
-        model.addAttribute("teacher", teacher);
-
-        return new ModelAndView("addTeacher");
-    }
-
-    @PostMapping("/teachers")
-    public ModelAndView saveCourse(@ModelAttribute("course") User teacher){
-        userService.addTeacher(teacher);
-        return new ModelAndView("redirect:/teachers");
-    }
 }

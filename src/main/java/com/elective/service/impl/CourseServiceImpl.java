@@ -5,6 +5,8 @@ import com.elective.repositories.CourseRepository;
 import com.elective.service.CourseService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -24,6 +26,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void addCourse(Course course) {
+        long diffDate = countDaysOfCourse(course.getDateStart(), course.getDateEnd());
+        course.setDuration(diffDate);
+
         courseRepository.save(course);
     }
 
@@ -34,8 +39,24 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void updateCourse(Course course) {
-        courseRepository.save(course);
+    public void updateCourse(int id, Course course) {
+        Course existingCourse = courseRepository.findByIdCourse(id);
+
+        existingCourse.setIdCourse(id);
+        existingCourse.setCourseName(course.getCourseName());
+        existingCourse.setDateStart(course.getDateStart());
+        existingCourse.setDateEnd(course.getDateEnd());
+
+        long diffDays = countDaysOfCourse(course.getDateStart(), course.getDateEnd());
+
+        existingCourse.setDuration(diffDays);
+        existingCourse.setIdTeacher(course.getIdTeacher());
+        existingCourse.setDescription(course.getDescription());
+        courseRepository.save(existingCourse);
+    }
+
+    private long countDaysOfCourse(LocalDate dateStart, LocalDate dateEnd){
+        return ChronoUnit.DAYS.between(dateStart, dateEnd);
     }
 
     @Override

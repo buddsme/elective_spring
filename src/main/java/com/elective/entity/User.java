@@ -44,7 +44,4 @@ public class User {
         this.roles = role;
     }
 
-    public List<Role> getRoles() {
-        return roles;
-    }
 }

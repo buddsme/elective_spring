@@ -1,6 +1,5 @@
 package com.elective.entity;
 
-import com.elective.enums.RolesEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

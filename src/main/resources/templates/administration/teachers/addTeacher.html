@@ -14,7 +14,7 @@
     <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
       <h1 class="text-center mt-3">Add New Teacher</h1>
       <div class="card-body">
-        <form th:action="@{/teachers}" th:object = "${teacher}" method="POST">
+        <form th:action="@{/admin/teachers/addTeacher}" th:object = "${teacher}" method="POST">
           <div class="form-group" >
             <label class="mb-1">Teacher Name</label>
             <input type = "text" name = "firstName" th:field="*{firstName}" class="form-control mb-2" placeholder="Enter the teacher name">
@@ -23,7 +23,24 @@
             <input type = "text" name = "secondName" th:field="*{secondName}" class="form-control mb-2" placeholder="Enter the teacher second name">
 
             <label class="mb-1">E-mail</label>
-            <input type = "email" name = "email" th:field="*{email}" class="form-control mb-2" placeholder="Enter the e-mail">
+            <input id="email" type="text" class="form-control mb-2" name="email" value="" placeholder="Enter the e-mail"
+                   required
+                   autofocus
+                   pattern="^[a-zA-Z0-9._-]+@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$"
+                   title="Email should match next regex: email@email.ml">
+            <div class="invalid-feedback">
+              Email is invalid
+            </div>
+
+            <label class="mb-1">Password</label>
+            <input id="password" type="password" class="form-control mb-2" name="password" placeholder="Enter the password"
+                   min="8"
+                   max="24"
+                   required>
+            <div class="invalid-feedback">
+              Password is required
+            </div>
+<!--            <input type = "password" name = "password" th:field="*{password}" class="form-control mb-2" placeholder="Enter the password">-->
           </div>
 
           <div class="footer-body">
