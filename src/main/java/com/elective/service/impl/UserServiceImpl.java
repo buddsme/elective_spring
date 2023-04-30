@@ -1,6 +1,5 @@
 package com.elective.service.impl;
 
-import com.elective.entity.Course;
 import com.elective.entity.Role;
 import com.elective.entity.User;
 import com.elective.repositories.RolesRepository;
@@ -10,9 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,19 +26,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllTeachers() {
+    public List<User> getAllUsersByRole(String roleToMatch) {
         List<User> users = userRepository.findAll();
 
-        List<User> teachers = new ArrayList<>();
+        List<User> usersByRole = new ArrayList<>();
         for (User user : users) {
             List<Role> roles = user.getRoles();
-            for(Role role : roles){
-                if (role.getRoleName().equals("TEACHER")) {
-                    teachers.add(user);
+            for (Role role : roles) {
+                if (role.getRoleName().equals(roleToMatch)) {
+                    usersByRole.add(user);
                 }
             }
         }
-        return teachers;
+        return usersByRole;
     }
 
     @Override
@@ -50,16 +47,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveTeacher(User teacher) {
-        teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
-        teacher.getRoles().add(rolesRepository.getRolesByIdRole(2));
-        userRepository.save(teacher);
-    }
-
-    @Override
-    public void saveUser(User user) {
+    public void saveUser(User user, int roleId) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.getRoles().add(rolesRepository.getRolesByIdRole(3));
+        user.getRoles().add(rolesRepository.getRolesByIdRole(roleId));
         userRepository.save(user);
     }
 
@@ -83,16 +73,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateTeacher(int id, User newTeacher) {
-        User currentTeacher = userRepository.findById(id);
+    public void updateUser(int id, User newUser) {
+        User userToUpdate = userRepository.findById(id);
 
-        currentTeacher.setId(id);
-        currentTeacher.setFirstName(newTeacher.getFirstName());
-        currentTeacher.setSecondName(newTeacher.getSecondName());
-        currentTeacher.setEmail(newTeacher.getEmail());
-        currentTeacher.setPassword(passwordEncoder.encode(newTeacher.getPassword()));
-        currentTeacher.setBlocked(newTeacher.isBlocked());
+        userToUpdate.setId(id);
+        userToUpdate.setFirstName(newUser.getFirstName());
+        userToUpdate.setSecondName(newUser.getSecondName());
+        userToUpdate.setEmail(newUser.getEmail());
+        userToUpdate.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        userToUpdate.setBlocked(newUser.isBlocked());
 
-        userRepository.save(currentTeacher);
+        userRepository.save(userToUpdate);
     }
 }

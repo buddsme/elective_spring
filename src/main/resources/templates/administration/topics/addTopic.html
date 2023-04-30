@@ -10,6 +10,7 @@
           crossorigin="anonymous">
 </head>
 <body>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light ">
     <a class="navbar-brand ps-4 pe-4" href="/courses">Electives</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -19,30 +20,37 @@
     <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
             <div sec:authorize="isAuthenticated()">
-                <a class="nav-link" th:href="@{/logout}">Log out</a>
+                <a class="nav-link mx-4" th:href="@{/logout}">Log out</a>
             </div>
-            <div sec:authorize="isAnonymous()">
+            <div class="d-flex flex-row" sec:authorize="isAnonymous()">
                 <a class="nav-link" th:href="@{/login}">Log in</a>
-                <a class="nav-link" th:href="@{/register}">Sign up</a>
+                <a class="nav-link me-2" th:href="@{/register}">Sign up</a>
             </div>
-
         </ul>
     </div>
 </nav>
-<!--        <li class="nav-item">-->
-<!--            <a class="nav-link" href="/login">Login</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item ps-2 pe-4">-->
-<!--            <a class="nav-link" href="/register">Sign up</a>-->
-<!--        </li>-->
+
 <br>
-<h1 class="text-center">Administration page</h1>
-<h5 class="text-center">Choose what you want to do</h5>
-<div class="d-grid gap-3 col-3 mx-auto mt-4">
-    <a class="btn btn-primary" th:href="@{/admin/courses}" role="button">Edit Courses</a>
-    <a class="btn btn-primary" th:href="@{/admin/topics}" role="button">Edit Topics</a>
-    <a class="btn btn-primary" th:href="@{/admin/users(role='teacher')}" role="button">Edit Teachers</a>
-    <a class="btn btn-primary" th:href="@{/admin/users(role='student')}" role="button">Edit Students</a>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+            <h1 class="text-center">Add New Topic</h1>
+            <div class="card-body">
+                <form th:action="@{/admin/topics/addTopic}" th:object="${topic}" method="POST">
+                    <div class="form-group">
+                        <label>Topic Name</label>
+                        <input type="text" name="courseName" th:field="*{topicName}" class="form-control mb-2"
+                               placeholder="Enter the topic name">
+
+                        <div class="footer-body">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

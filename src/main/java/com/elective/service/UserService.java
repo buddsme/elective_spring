@@ -4,16 +4,14 @@ import com.elective.entity.User;
 
 import java.util.List;
 
-public interface UserService{
-    List<User> getAllTeachers();
+public interface UserService {
+    List<User> getAllUsersByRole(String roleToMatch);
 
     User getUserById(int id);
 
-    void saveTeacher(User teacher);
+    void updateUser(int id, User newUser);
 
-    void updateTeacher(int id, User teacher);
-
-    void saveUser(User user);
+    void saveUser(User user, int role);
 
     void deleteUser(int id);
 

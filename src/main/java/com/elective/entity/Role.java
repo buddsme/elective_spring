@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name="roles")
+@Table(name = "roles")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_role")
+    @Column(name = "id_role")
     private int idRole;
 
-    @Column(name="role_name")
+    @Column(name = "role_name")
     private String roleName;
 
     public Role(String roleName) {

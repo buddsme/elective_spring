@@ -2,11 +2,9 @@ package com.elective.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @Entity
 @AllArgsConstructor
@@ -18,13 +16,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name ="email")
+    @Column(name = "email")
     private String email;
-    @Column(name ="password")
+    @Column(name = "password")
     private String password;
-    @Column(name ="first_name")
+    @Column(name = "first_name")
     private String firstName;
-    @Column(name ="second_name")
+    @Column(name = "second_name")
     private String secondName;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -32,7 +30,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
-    @Column(name ="is_blocked")
+    @Column(name = "is_blocked")
     private boolean isBlocked;
 
     public User(String email, String password, String firstName, String secondName, boolean blocked, List<Role> role) {

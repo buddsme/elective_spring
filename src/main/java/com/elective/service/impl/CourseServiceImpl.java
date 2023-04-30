@@ -55,7 +55,7 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.save(existingCourse);
     }
 
-    private long countDaysOfCourse(LocalDate dateStart, LocalDate dateEnd){
+    private long countDaysOfCourse(LocalDate dateStart, LocalDate dateEnd) {
         return ChronoUnit.DAYS.between(dateStart, dateEnd);
     }
 

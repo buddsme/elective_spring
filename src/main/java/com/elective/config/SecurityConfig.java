@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(staticResources)
                 .permitAll()
-                .requestMatchers("/courses**")
+                .requestMatchers("/admin/courses**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -65,12 +65,12 @@ public class SecurityConfig {
         return http.build();
     }
 
-    public UserDetailsService userDetailsServiceBean() throws Exception {
+    public UserDetailsService userDetailsServiceBean() {
         return new MyUserDetailsService(userRepository);
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() throws Exception {
+    public AuthenticationProvider authenticationProvider(){
         final DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsServiceBean());
         authenticationProvider.setPasswordEncoder(passwordEncoder());

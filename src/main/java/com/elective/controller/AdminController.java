@@ -1,6 +1,7 @@
 package com.elective.controller;
 
 import com.elective.entity.Course;
+import com.elective.entity.Role;
 import com.elective.entity.Topic;
 import com.elective.entity.User;
 import com.elective.service.CourseService;
@@ -28,65 +29,97 @@ public class AdminController {
     }
 
     @GetMapping
-    public ModelAndView showAdminPage(){
+    public ModelAndView showAdminPage() {
         return new ModelAndView("administration/adminPage");
     }
 
     //teacher controller
 
-    @GetMapping("/teachers")
-    public ModelAndView listTeachers(Model model){
-        model.addAttribute("teachers", userService.getAllTeachers());
-        return new ModelAndView("administration/teachers/teachersInfo");
+    @GetMapping("/users")
+    public ModelAndView listUsers(@RequestParam("role") String role, Model model) {
+        if (role.equals("teacher")) {
+            model.addAttribute("users", userService.getAllUsersByRole("TEACHER"));
+            model.addAttribute("role", role);
+        } else if (role.equals("student")) {
+            model.addAttribute("users", userService.getAllUsersByRole("STUDENT"));
+            model.addAttribute("role", role);
+        }
+        return new ModelAndView("administration/users/usersInfo");
     }
 
-    @GetMapping("/teachers/addTeacher")
-    public ModelAndView addTeacherForm(Model model){
+    @GetMapping("/users/addUser")
+    public ModelAndView addUserForm(@RequestParam("role") String role) {
 
-        User teacher = new User();
-        model.addAttribute("teacher", teacher);
+        ModelAndView mav = new ModelAndView("administration/users/addUser");
+        if (role.equals("teacher")) {
+            User user = new User();
+            mav.addObject("user", user);
+            mav.addObject("role", role);
+        } else if (role.equals("student")) {
+            User user = new User();
+            mav.addObject("user", user);
+            mav.addObject("role", role);
+        }
 
-        return new ModelAndView("administration/teachers/addTeacher");
+        return mav;
     }
 
-    @PostMapping("/teachers/addTeacher")
-    public ModelAndView saveTeacher(@ModelAttribute("teacher") User teacher){
-        userService.saveTeacher(teacher);
-        return new ModelAndView("redirect:/admin/teachers");
+    @PostMapping("/users/addUser")
+    public ModelAndView saveUser(@RequestParam("role") String role, @ModelAttribute("user") User user) {
+        userService.saveUser(user, role.equals("teacher") ? 2 : 3);
+        return new ModelAndView("redirect:/admin/users?role=" + role);
     }
 
-    @GetMapping("/teachers/delete/{id}")
-    public ModelAndView deleteTeacher(@PathVariable int id){
+    @GetMapping("/users/delete/{id}")
+    public ModelAndView deleteUser(@PathVariable int id) {
+        ModelAndView mav = getModelAndView(id);
         userService.deleteUser(id);
-        return new ModelAndView("redirect:/admin/teachers");
+        return mav;
     }
 
-    @GetMapping("/teachers/edit/{id}")
-    public ModelAndView editTeacher(@PathVariable int id, Model model){
-        model.addAttribute("teacher", userService.getUserById(id));
-        return new ModelAndView("administration/teachers/editTeacher");
+    @GetMapping("/users/edit/{id}")
+    public ModelAndView editUser(@PathVariable int id) {
+        ModelAndView mav = new ModelAndView("administration/users/editUser");
+        mav.addObject("user", userService.getUserById(id));
+        return mav;
     }
 
-    @PostMapping("/teachers/edit/{id}")
-    public ModelAndView updateTeacher(@PathVariable int id, @ModelAttribute("teacher") User teacher){
-        userService.updateTeacher(id,teacher);
-
-        return new ModelAndView("redirect:/admin/teachers");
+    @PostMapping("/users/edit/{id}")
+    public ModelAndView updateUser(@PathVariable int id, @ModelAttribute("user") User user) {
+        ModelAndView mav = getModelAndView(id);
+        userService.updateUser(id, user);
+        return mav;
     }
 
     @PostMapping("setAccountStatus/{id}")
-    public ModelAndView updateUserStatus(@PathVariable int id){
-        if(!userService.getUserById(id).isBlocked()){
+    public ModelAndView updateUserStatus(@PathVariable int id) {
+        ModelAndView mav = getModelAndView(id);
+        if (!userService.getUserById(id).isBlocked()) {
             userService.blockUser(id);
-        }else{
+        } else {
             userService.unblockUser(id);
         }
-        return new ModelAndView("redirect:/admin/teachers");
+        return mav;
+    }
+
+    private ModelAndView getModelAndView(@PathVariable int id) {
+        ModelAndView mav = new ModelAndView("administration/adminPage");
+
+        List<Role> roles = userService.getUserById(id).getRoles();
+        for (Role userRoles : roles) {
+            if (userRoles.getRoleName().equals("TEACHER")) {
+                mav = new ModelAndView("redirect:/admin/users?role=teacher");
+            }
+            if (userRoles.getRoleName().equals("STUDENT")) {
+                mav = new ModelAndView("redirect:/admin/users?role=student");
+            }
+        }
+        return mav;
     }
 
     // Course controller
     @GetMapping("/courses")
-    public ModelAndView listCourses(Model model){
+    public ModelAndView listCourses(Model model) {
 
         model.addAttribute("courses", courseService.getAllCourses());
 
@@ -97,12 +130,12 @@ public class AdminController {
     }
 
     @GetMapping("/courses/addCourse")
-    public ModelAndView addCourseForm(Model model){
+    public ModelAndView addCourseForm(Model model) {
 
         Course course = new Course();
         model.addAttribute("course", course);
 
-        List<User> teachers = userService.getAllTeachers();
+        List<User> teachers = userService.getAllUsersByRole("TEACHER");
         model.addAttribute("teachers", teachers);
 
         List<Topic> topics = topicService.getAllTopics();
@@ -112,15 +145,15 @@ public class AdminController {
     }
 
     @PostMapping("/courses/addCourse")
-    public ModelAndView saveCourse(@ModelAttribute("course") Course course){
+    public ModelAndView saveCourse(@ModelAttribute("course") Course course) {
         courseService.addCourse(course);
         return new ModelAndView("redirect:/admin/courses");
     }
 
     @GetMapping("/courses/edit/{id}")
-    public ModelAndView editCourse(@PathVariable int id, Model model){
+    public ModelAndView editCourse(@PathVariable int id, Model model) {
         model.addAttribute("course", courseService.getCourseById(id));
-        List<User> teachers = userService.getAllTeachers();
+        List<User> teachers = userService.getAllUsersByRole("TEACHER");
         model.addAttribute("teachers", teachers);
 
         List<Topic> topics = topicService.getAllTopics();
@@ -129,15 +162,47 @@ public class AdminController {
     }
 
     @PostMapping("/courses/edit/{id}")
-    public ModelAndView updateCourse(@PathVariable int id, @ModelAttribute("course") Course course){
+    public ModelAndView updateCourse(@PathVariable int id, @ModelAttribute("course") Course course) {
         courseService.updateCourse(id, course);
 
         return new ModelAndView("redirect:/admin/courses");
     }
 
     @GetMapping("/courses/delete/{id}")
-    public ModelAndView deleteCourse(@PathVariable int id){
+    public ModelAndView deleteCourse(@PathVariable int id) {
         courseService.deleteCourse(id);
         return new ModelAndView("redirect:/admin/courses");
     }
+
+    // topic controller
+
+    @GetMapping("/topics")
+    public ModelAndView listTopics(Model model) {
+        List<Topic> topics = topicService.getAllTopics();
+        model.addAttribute("topics", topics);
+
+        return new ModelAndView("administration/topics/topicInfo");
+    }
+
+    @GetMapping("/topics/addTopic")
+    public ModelAndView addTopicForm(Model model) {
+
+        Topic topic = new Topic();
+        model.addAttribute("topic", topic);
+
+        return new ModelAndView("administration/topics/addTopic");
+    }
+
+    @PostMapping("/topics/addTopic")
+    public ModelAndView saveTopic(@ModelAttribute("topic") Topic topic) {
+        topicService.addTopic(topic);
+        return new ModelAndView("redirect:/admin/topics");
+    }
+
+    @GetMapping("/topics/delete/{id}")
+    public ModelAndView deleteTopic(@PathVariable int id) {
+        topicService.deleteTopic(id);
+        return new ModelAndView("redirect:/admin/topics");
+    }
+
 }

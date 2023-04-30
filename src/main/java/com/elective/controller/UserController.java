@@ -24,15 +24,15 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public ModelAndView registerPage(Model model){
+    public ModelAndView registerPage(Model model) {
         User user = new User();
         model.addAttribute("user", user);
         return new ModelAndView("register");
     }
 
     @PostMapping("/register")
-    public ModelAndView addUser(@ModelAttribute("user")User user){
-        userService.saveUser(user);
+    public ModelAndView addUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user, 3);
         return new ModelAndView("redirect:/courses");
     }
 
