@@ -27,12 +27,12 @@
             <input type = "date" name = "dateEnd" th:field="*{dateEnd}" class="form-control" placeholder="Enter the course end date">
 
             <label>Teacher</label>
-            <select class="form-control" name = "idTeacher" th:field="*{idTeacher}">
+            <select class="form-control" name = "idTeacher" th:field="*{teacher}">
               <option th:each="teacher:${teachers}" th:value="${teacher.id}" th:text="${teacher.firstName}" value=""/>
             </select>
 
             <label>Topic</label>
-            <select class="form-control" name = "idTopic" th:field="*{idTopic}">
+            <select class="form-control" name = "idTopic" th:field="*{topic}">
               <option th:each="topic:${topics}" th:value="${topic.idTopic}" th:text="${topic.topicName}" value=""/>
             </select>
 

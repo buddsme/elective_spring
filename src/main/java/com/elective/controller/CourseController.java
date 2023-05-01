@@ -31,4 +31,11 @@ public class CourseController {
         this.userService = userService;
         this.topicService = topicService;
     }
+
+    @GetMapping("/main-page")
+    public ModelAndView showMainPage(Model model){
+        List<Course> courses = courseService.getAllCourses();
+        model.addAttribute("courses", courses);
+        return new ModelAndView("/mainPage");
+    }
 }

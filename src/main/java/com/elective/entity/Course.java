@@ -28,11 +28,16 @@ public class Course {
     private LocalDate dateEnd;
     @Column(name = "duration")
     private long duration;
-    @Column(name = "id_teacher")
-    private int idTeacher;
-
-    @Column(name = "id_topic")
-    private int idTopic;
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private User teacher;
+    @ManyToOne
+    @JoinColumn(name = "topic_id")
+    private Topic topic;
     @Column(name = "descriprion")
     private String description;
+
+    public String getNameAndSurnameOfTeacher(User teacher){
+        return teacher.getFirstName() + " " + teacher.getSecondName();
+    }
 }

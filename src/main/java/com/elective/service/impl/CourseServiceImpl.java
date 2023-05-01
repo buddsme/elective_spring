@@ -50,7 +50,7 @@ public class CourseServiceImpl implements CourseService {
         long diffDays = countDaysOfCourse(course.getDateStart(), course.getDateEnd());
 
         existingCourse.setDuration(diffDays);
-        existingCourse.setIdTeacher(course.getIdTeacher());
+        existingCourse.setTeacher(course.getTeacher());
         existingCourse.setDescription(course.getDescription());
         courseRepository.save(existingCourse);
     }

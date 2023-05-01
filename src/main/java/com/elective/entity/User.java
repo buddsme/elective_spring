@@ -32,6 +32,8 @@ public class User {
     private List<Role> roles = new ArrayList<>();
     @Column(name = "is_blocked")
     private boolean isBlocked;
+    @OneToMany(mappedBy = "teacher")
+    private List<Course> courses;
 
     public User(String email, String password, String firstName, String secondName, boolean blocked, List<Role> role) {
         this.email = email;
@@ -41,5 +43,4 @@ public class User {
         this.isBlocked = blocked;
         this.roles = role;
     }
-
 }

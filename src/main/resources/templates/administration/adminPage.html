@@ -19,23 +19,19 @@
     <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
             <div sec:authorize="isAuthenticated()">
-                <a class="nav-link" th:href="@{/logout}">Log out</a>
+                <a class="nav-link me-2" th:href="@{/logout}">Log out</a>
             </div>
             <div sec:authorize="isAnonymous()">
                 <a class="nav-link" th:href="@{/login}">Log in</a>
-                <a class="nav-link" th:href="@{/register}">Sign up</a>
+                <a class="nav-link me-2" th:href="@{/register}">Sign up</a>
             </div>
 
         </ul>
     </div>
 </nav>
-<!--        <li class="nav-item">-->
-<!--            <a class="nav-link" href="/login">Login</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item ps-2 pe-4">-->
-<!--            <a class="nav-link" href="/register">Sign up</a>-->
-<!--        </li>-->
+
 <br>
+
 <h1 class="text-center">Administration page</h1>
 <h5 class="text-center">Choose what you want to do</h5>
 <div class="d-grid gap-3 col-3 mx-auto mt-4">
