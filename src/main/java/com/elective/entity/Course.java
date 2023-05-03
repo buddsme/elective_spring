@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -37,7 +39,8 @@ public class Course {
     @Column(name = "descriprion")
     private String description;
 
-    public String getNameAndSurnameOfTeacher(User teacher){
-        return teacher.getFirstName() + " " + teacher.getSecondName();
-    }
+    private boolean isAssignable;
+
+    @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserCoursesJournal> studentCourses = new ArrayList<>();
 }

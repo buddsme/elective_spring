@@ -39,7 +39,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         String[] staticResources = {
-                "/", "/login**", "/register**"};
+                "/", "/login**", "/register**", "/mainPage**"};
 
 
         http
@@ -49,14 +49,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(staticResources)
                 .permitAll()
-                .requestMatchers("/admin/courses**")
-                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/admin", true)
+                .defaultSuccessUrl("/main-page", true)
                 .failureUrl("/login?error=true")
                 .and()
                 .logout()

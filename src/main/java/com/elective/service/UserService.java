@@ -18,4 +18,6 @@ public interface UserService {
     void blockUser(int id);
 
     void unblockUser(int id);
+
+    int getUserIdByEmail(String email);
 }

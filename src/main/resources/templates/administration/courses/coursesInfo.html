@@ -81,7 +81,7 @@
             <tr th:each="course: ${courses}">
                 <td th:text="${course.getCourseName()}"></td>
                 <td th:text="${course.getTopic().getTopicName()}"></td>
-                <td th:text="${course.getNameAndSurnameOfTeacher(course.getTeacher())}"></td>
+                <td th:text="${course.getTeacher().getFirstName() + ' ' + course.getTeacher().getSecondName()}"></td>
                 <td th:text="${course.getDateStart()}"></td>
                 <td th:text="${course.getDateEnd()}"></td>
                 <td th:text="${course.getDuration()}"></td>

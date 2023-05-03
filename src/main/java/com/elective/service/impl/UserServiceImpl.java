@@ -85,4 +85,9 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(userToUpdate);
     }
+
+    @Override
+    public int getUserIdByEmail(String email) {
+        return userRepository.findUserByEmail(email).getId();
+    }
 }
