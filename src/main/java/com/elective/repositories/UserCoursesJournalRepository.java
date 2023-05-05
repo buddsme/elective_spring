@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface UserCoursesJournalRepository extends JpaRepository<UserCoursesJournal, Integer> {
     List<UserCoursesJournal> findByUser(User user);
+    List<UserCoursesJournal> findAllByCourse(Course course);
 }

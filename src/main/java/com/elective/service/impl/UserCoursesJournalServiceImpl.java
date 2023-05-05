@@ -41,7 +41,7 @@ public class UserCoursesJournalServiceImpl implements UserCoursesJournalService 
     }
 
     @Override
-    public List<Course> findUserAssignedCourses(int userId, List<Course> courses) {
+    public void findUserAssignedCourses(int userId, List<Course> courses) {
         User user = userRepository.findById(userId);
 
         List<UserCoursesJournal> userCoursesJournals = userCoursesJournalRepository.findByUser(user);
@@ -54,7 +54,14 @@ public class UserCoursesJournalServiceImpl implements UserCoursesJournalService 
                 }
             }
         }
+    }
 
-        return courses;
+    @Override
+    public void countStudentsOnCourses(List<Course> courses) {
+
+        for(Course course : courses){
+            List<UserCoursesJournal> coursesJournal = userCoursesJournalRepository.findAllByCourse(course);
+            course.setNumberOfStudents(coursesJournal.size());
+        }
     }
 }

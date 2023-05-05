@@ -37,7 +37,7 @@ public class User {
     private List<Course> courses;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    List<UserCoursesJournal> studentCourses = new ArrayList<>();
+    private List<UserCoursesJournal> studentCourses = new ArrayList<>();
 
     public User(String email, String password, String firstName, String secondName, boolean blocked, List<Role> role) {
         this.email = email;

@@ -36,11 +36,13 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "topic_id")
     private Topic topic;
-    @Column(name = "descriprion")
+    @Column(name = "description")
     private String description;
 
     private boolean isAssignable;
 
     @OneToMany(mappedBy = "course",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserCoursesJournal> studentCourses = new ArrayList<>();
+
+    private int numberOfStudents;
 }

@@ -54,9 +54,10 @@
                 Sort By...
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">Name (a-z)</a>
-                <a class="dropdown-item" href="#">Name (z-a)</a>
-                <a class="dropdown-item" href="#">Duration</a>
+                <a class="dropdown-item" href="/main-page?sort=name(a-z)">Name (a-z)</a>
+                <a class="dropdown-item" href="/main-page?sort=name(z-a)">Name (z-a)</a>
+                <a class="dropdown-item" href="/main-page?sort=duration">Duration</a>
+                <a class="dropdown-item" href="/main-page?sort=number-of-students">Number of Students</a>
             </div>
         </div>
         <div class="row">
@@ -69,6 +70,8 @@
                             th:text="'Teacher: ' + ${course.getTeacher().getFirstName() + ' ' + course.getTeacher().getSecondName()}"></h6>
                         <h6 class="card-subtitle mb-2 text-muted"
                             th:text="'Duration: ' + ${course.duration + ' days'}"></h6>
+                        <h6 class="card-subtitle mb-2 text-muted"
+                            th:text="${course.numberOfStudents + ' students already joined the course'}"></h6>
                         <p class="card-text" th:text="${course.description}"></p>
                         <p class="card-text"><small class="text-muted" th:text="${course.dateStart}"></small></p>
                         <div class="d-flex justify-content-center">
