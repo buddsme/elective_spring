@@ -2,6 +2,7 @@ package com.elective.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,6 @@ public class User {
     private String firstName;
     @Column(name = "second_name")
     private String secondName;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -38,6 +38,12 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserCoursesJournal> studentCourses = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private Image image;
+    @Transient
+    private MultipartFile file;
 
     public User(String email, String password, String firstName, String secondName, boolean blocked, List<Role> role) {
         this.email = email;

@@ -1,15 +1,16 @@
 package com.elective.service.impl;
 
-import com.elective.entity.Role;
 import com.elective.entity.User;
+import com.elective.entity.dto.UserDTO;
 import com.elective.repositories.RolesRepository;
 import com.elective.repositories.UserRepository;
 import com.elective.service.UserService;
+import com.elective.service.mapper.UserDTOMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,19 +27,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsersByRole(String roleToMatch) {
-        List<User> users = userRepository.findAll();
-
-        List<User> usersByRole = new ArrayList<>();
-        for (User user : users) {
-            List<Role> roles = user.getRoles();
-            for (Role role : roles) {
-                if (role.getRoleName().equals(roleToMatch)) {
-                    usersByRole.add(user);
-                }
-            }
-        }
-        return usersByRole;
+    public List<UserDTO> getAllUsersByRole(String roleToMatch) {
+        return userRepository
+                .findAll()
+                .stream()
+                .filter(user -> user.getRoles()
+                        .contains(rolesRepository.getRoleByRoleName(roleToMatch)))
+                .map(UserDTOMapper.INSTANCE::userToUserDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -47,10 +43,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User user, int roleId) {
+    public int saveUser(User user, int roleId) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.getRoles().add(rolesRepository.getRolesByIdRole(roleId));
-        userRepository.save(user);
+        user.getRoles().add(rolesRepository.getRoleByIdRole(roleId));
+        return userRepository.save(user).getId();
     }
 
     @Override

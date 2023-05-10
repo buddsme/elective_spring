@@ -1,17 +1,18 @@
 package com.elective.service;
 
 import com.elective.entity.User;
+import com.elective.entity.dto.UserDTO;
 
 import java.util.List;
 
 public interface UserService {
-    List<User> getAllUsersByRole(String roleToMatch);
+    List<UserDTO> getAllUsersByRole(String roleToMatch);
 
     User getUserById(int id);
 
     void updateUser(int id, User newUser);
 
-    void saveUser(User user, int role);
+    int saveUser(User user, int role);
 
     void deleteUser(int id);
 

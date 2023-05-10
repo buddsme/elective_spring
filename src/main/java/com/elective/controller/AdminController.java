@@ -1,17 +1,20 @@
 package com.elective.controller;
 
-import com.elective.entity.Course;
-import com.elective.entity.Role;
-import com.elective.entity.Topic;
-import com.elective.entity.User;
+import com.elective.entity.*;
+import com.elective.entity.dto.UserDTO;
+import com.elective.repositories.ImageRepository;
 import com.elective.service.CourseService;
 import com.elective.service.TopicService;
 import com.elective.service.UserService;
+import com.elective.utils.ImageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -22,10 +25,13 @@ public class AdminController {
     private final CourseService courseService;
     private final TopicService topicService;
 
-    public AdminController(UserService userService, CourseService courseService, TopicService topicService) {
+    private final ImageRepository imageRepository;
+
+    public AdminController(UserService userService, CourseService courseService, TopicService topicService, ImageRepository imageRepository) {
         this.userService = userService;
         this.courseService = courseService;
         this.topicService = topicService;
+        this.imageRepository = imageRepository;
     }
 
     @GetMapping
@@ -65,7 +71,16 @@ public class AdminController {
     }
 
     @PostMapping("/users/addUser")
-    public ModelAndView saveUser(@RequestParam("role") String role, @ModelAttribute("user") User user) {
+    public ModelAndView saveUser(@RequestParam("role") String role, @RequestParam(value = "image", required = false) MultipartFile file, @ModelAttribute("user") User user,
+                                 Errors validationErrors) throws IOException {
+
+        validationErrors.rejectValue("file", "rejected value");
+        user.setImage(imageRepository.save(Image.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .image(ImageUtil.compressImage(file.getBytes()))
+                .build()));
+
         userService.saveUser(user, role.equals("teacher") ? 2 : 3);
         return new ModelAndView("redirect:/admin/users?role=" + role);
     }
@@ -135,7 +150,7 @@ public class AdminController {
         Course course = new Course();
         model.addAttribute("course", course);
 
-        List<User> teachers = userService.getAllUsersByRole("TEACHER");
+        List<UserDTO> teachers = userService.getAllUsersByRole("TEACHER");
         model.addAttribute("teachers", teachers);
 
         List<Topic> topics = topicService.getAllTopics();
@@ -153,7 +168,7 @@ public class AdminController {
     @GetMapping("/courses/edit/{id}")
     public ModelAndView editCourse(@PathVariable int id, Model model) {
         model.addAttribute("course", courseService.getCourseById(id));
-        List<User> teachers = userService.getAllUsersByRole("TEACHER");
+        List<UserDTO> teachers = userService.getAllUsersByRole("TEACHER");
         model.addAttribute("teachers", teachers);
 
         List<Topic> topics = topicService.getAllTopics();

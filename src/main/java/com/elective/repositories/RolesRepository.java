@@ -10,7 +10,9 @@ import java.util.List;
 @Repository
 public interface RolesRepository extends JpaRepository<Role, Integer> {
 
-    Role getRolesByIdRole(int id);
+    Role getRoleByIdRole(int id);
+
+    Role getRoleByRoleName(String roleName);
 
     List<Role> findAll();
 }
