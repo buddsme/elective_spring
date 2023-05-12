@@ -30,4 +30,9 @@ public class TopicServiceImpl implements TopicService {
     public void deleteTopic(int id) {
         topicRepository.deleteById(id);
     }
+
+    @Override
+    public Topic getTopicByTopicName(String name) {
+        return topicRepository.getTopicByTopicName(name);
+    }
 }

@@ -1,6 +1,7 @@
 package com.elective.controller;
 
 import com.elective.entity.Course;
+import com.elective.entity.Topic;
 import com.elective.service.CourseService;
 import com.elective.service.TopicService;
 import com.elective.service.UserService;
@@ -60,5 +61,29 @@ public class CourseController {
     public ModelAndView assignOnCourse(@RequestParam("userId") int userId, @RequestParam("courseId") int courseId) {
         userCoursesJournalService.saveUserCourse(userId, courseId);
         return new ModelAndView("redirect:/main-page");
+    }
+
+    @GetMapping("/main-page/teacher/courses")
+    public ModelAndView showTeacherCourses(@RequestParam("teacherId") int id, Model model){
+        List<Course> courses = courseService.getAllCoursesByTeacherId(id);
+
+        userCoursesJournalService.countStudentsOnCourses(courses);
+        model.addAttribute("courses", courses);
+        return new ModelAndView("/mainPage");
+    }
+
+    @GetMapping("/main-page/topics")
+    public ModelAndView showTopics(Model model){
+        List<Topic> topics = topicService.getAllTopics();
+        model.addAttribute("topics", topics);
+        return new ModelAndView("client/topics");
+    }
+
+    @GetMapping("/main-page/topic/courses")
+    public ModelAndView showTopicCourses(@RequestParam("topic") String topicName, Model model){
+        Topic topic = topicService.getTopicByTopicName(topicName);
+        List<Course> topicCourses = courseService.findAllByTopic(topic);
+        model.addAttribute("courses", topicCourses);
+        return new ModelAndView("/mainPage");
     }
 }

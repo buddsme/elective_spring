@@ -48,12 +48,5 @@ public class UserController {
         return new ModelAndView("client/teachers");
     }
 
-    @GetMapping("/teacher/courses")
-    public ModelAndView showTeacherCourses(@RequestParam("teacherId") int id, Model model){
-        List<Course> courses = courseService.getAllCoursesByTeacherId(id);
 
-        userCoursesJournalService.countStudentsOnCourses(courses);
-        model.addAttribute("courses", courses);
-        return new ModelAndView("/mainPage");
-    }
 }

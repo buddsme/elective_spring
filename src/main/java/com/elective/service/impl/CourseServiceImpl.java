@@ -1,6 +1,7 @@
 package com.elective.service.impl;
 
 import com.elective.entity.Course;
+import com.elective.entity.Topic;
 import com.elective.repositories.CourseRepository;
 import com.elective.service.CourseService;
 import org.springframework.stereotype.Service;
@@ -67,5 +68,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getAllCoursesByTeacherId(int id) {
         return courseRepository.findAllByTeacherId(id);
+    }
+
+    @Override
+    public List<Course> findAllByTopic(Topic topic) {
+        return courseRepository.findAllByTopic(topic);
     }
 }

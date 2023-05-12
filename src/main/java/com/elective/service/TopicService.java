@@ -10,4 +10,6 @@ public interface TopicService {
     void addTopic(Topic topic);
 
     void deleteTopic(int id);
+
+    Topic getTopicByTopicName(String name);
 }

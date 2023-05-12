@@ -199,7 +199,7 @@ public class AdminController {
         return new ModelAndView("administration/topics/topicInfo");
     }
 
-    @GetMapping("/topics/addTopic")
+    @GetMapping("/topics/add-topic")
     public ModelAndView addTopicForm(Model model) {
 
         Topic topic = new Topic();
@@ -208,7 +208,7 @@ public class AdminController {
         return new ModelAndView("administration/topics/addTopic");
     }
 
-    @PostMapping("/topics/addTopic")
+    @PostMapping("/topics/add-topic")
     public ModelAndView saveTopic(@ModelAttribute("topic") Topic topic) {
         topicService.addTopic(topic);
         return new ModelAndView("redirect:/admin/topics");
