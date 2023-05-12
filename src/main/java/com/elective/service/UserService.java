@@ -2,6 +2,7 @@ package com.elective.service;
 
 import com.elective.entity.User;
 import com.elective.entity.dto.UserDTO;
+import com.elective.entity.dto.UserWithImageDTO;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface UserService {
     void unblockUser(int id);
 
     int getUserIdByEmail(String email);
+
+    List<UserWithImageDTO> setImagesForTeachers(List<UserDTO> teachers);
 }

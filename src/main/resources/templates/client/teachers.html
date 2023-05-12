@@ -67,17 +67,26 @@
             <!--        <a class="dropdown-item" href="/main-page?sort=number-of-students">Number of Students</a>-->
             <!--      </div>-->
             <!--    </div>-->
-            <div class="list-group">
-                <div th:each="teacher : ${teachers}" class="list-group-item d-inline-block text-center">
-                    <img height="120" width="120" th:src="@{'data:image/png;base64,' + ${teacher.base64Image}}"/>
-                    <h5 class="card-title" th:text="${teacher.firstName} + ' ' + ${teacher.secondName}"></h5>
-                    <form th:action="@{/teacher/courses}" method="GET">
-                        <input type="hidden" name="teacherId" th:value="${teacher.id}">
-                        <button
-                                class="btn btn-success mt-2 mb-2">See courses
-                        </button>
-                    </form>
-
+            <div class="row">
+                <div th:each="teacher : ${teachers}" class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center mb-2">
+                                <img height="210" width="210" th:src="@{'data:image/png;base64,' + ${teacher.base64Image}}"/>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h5 class="card-title" th:text="${teacher.firstName} + ' ' + ${teacher.secondName}"></h5>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <form th:action="@{/teacher/courses}" method="GET">
+                                    <input type="hidden" name="teacherId" th:value="${teacher.id}">
+                                    <button
+                                            class="btn btn-success mt-2 mb-2">See courses
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
