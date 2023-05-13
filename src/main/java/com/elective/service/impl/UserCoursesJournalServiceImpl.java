@@ -44,7 +44,7 @@ public class UserCoursesJournalServiceImpl implements UserCoursesJournalService 
     public void findUserAssignedCourses(int userId, List<Course> courses) {
         User user = userRepository.findById(userId);
 
-        List<UserCoursesJournal> userCoursesJournals = userCoursesJournalRepository.findByUser(user);
+        List<UserCoursesJournal> userCoursesJournals = userCoursesJournalRepository.findAllByUser(user);
 
         for (Course course : courses) {
             for (UserCoursesJournal journal : userCoursesJournals) {

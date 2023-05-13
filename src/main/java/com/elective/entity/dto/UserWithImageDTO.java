@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -13,4 +15,5 @@ public class UserWithImageDTO {
     private String firstName;
     private String secondName;
     private String base64Image;
+    private LocalDate registeredDate;
 }

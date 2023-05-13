@@ -11,6 +11,8 @@ public interface UserService {
 
     User getUserById(int id);
 
+    UserDTO getUserDTOById(int id);
+
     void updateUser(int id, User newUser);
 
     int saveUser(User user, int role);
@@ -24,4 +26,6 @@ public interface UserService {
     int getUserIdByEmail(String email);
 
     List<UserWithImageDTO> setImagesForTeachers(List<UserDTO> teachers);
+
+    UserWithImageDTO setImagesForUser(UserDTO userDTO);
 }

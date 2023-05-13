@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,8 @@ public class User {
     private Image image;
     @Transient
     private MultipartFile file;
+
+    private LocalDate registeredDate;
 
     public User(String email, String password, String firstName, String secondName, boolean blocked, List<Role> role) {
         this.email = email;

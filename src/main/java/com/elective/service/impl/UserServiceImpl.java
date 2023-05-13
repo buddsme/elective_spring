@@ -13,6 +13,7 @@ import com.elective.utils.ImageUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -51,9 +52,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO getUserDTOById(int id) {
+        User user = userRepository.findById(id);
+        return UserDTOMapper.INSTANCE.userToUserDTO(user);
+    }
+
+    @Override
     public int saveUser(User user, int roleId) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(rolesRepository.getRoleByIdRole(roleId));
+        user.setRegisteredDate(LocalDate.now());
         return userRepository.save(user).getId();
     }
 
@@ -99,18 +107,23 @@ public class UserServiceImpl implements UserService {
     public List<UserWithImageDTO> setImagesForTeachers(List<UserDTO> teachers) {
         List<UserWithImageDTO> teachersWithImage = new ArrayList<>();
         for(UserDTO teacherDTO : teachers){
-            Image image = teacherDTO.getImage();
-
-            if(image.getName().isEmpty()){
-                image = imageRepository.getImageByName("default-user-photo.png");
-            }
-
-            byte[] imageData = ImageUtil.decompressImage(image.getImage());
-            String base64Image = Base64.getEncoder().encodeToString(imageData);
-
-            UserWithImageDTO teacherWithImage = new UserWithImageDTO(teacherDTO.getId(), teacherDTO.getEmail(), teacherDTO.getFirstName(), teacherDTO.getSecondName(), base64Image);
+            UserWithImageDTO teacherWithImage = setImagesForUser(teacherDTO);
             teachersWithImage.add(teacherWithImage);
         }
         return teachersWithImage;
+    }
+
+    @Override
+    public UserWithImageDTO setImagesForUser(UserDTO userDTO) {
+        Image image = userDTO.getImage();
+
+        if(image == null || image.getName().isEmpty()){
+            image = imageRepository.getImageByName("default-user-photo.png");
+        }
+
+        byte[] imageData = ImageUtil.decompressImage(image.getImage());
+        String base64Image = Base64.getEncoder().encodeToString(imageData);
+
+        return new UserWithImageDTO(userDTO.getId(), userDTO.getEmail(), userDTO.getFirstName(), userDTO.getSecondName(), base64Image, userDTO.getRegisteredDate());
     }
 }

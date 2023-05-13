@@ -45,4 +45,6 @@ public class Course {
     private List<UserCoursesJournal> studentCourses = new ArrayList<>();
 
     private int numberOfStudents;
+
+    private double progress;
 }
