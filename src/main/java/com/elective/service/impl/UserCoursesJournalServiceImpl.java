@@ -28,7 +28,7 @@ public class UserCoursesJournalServiceImpl implements UserCoursesJournalService 
     }
 
     public void saveUserCourse(int userId, int courseId) {
-        User user = userRepository.findById(userId);
+        User user = userRepository.findUserById(userId);
         Course course = courseRepository.findByIdCourse(courseId);
 
         UserCoursesJournal userCoursesJournal = new UserCoursesJournal();
@@ -42,7 +42,7 @@ public class UserCoursesJournalServiceImpl implements UserCoursesJournalService 
 
     @Override
     public void findUserAssignedCourses(int userId, List<Course> courses) {
-        User user = userRepository.findById(userId);
+        User user = userRepository.findUserById(userId);
 
         List<UserCoursesJournal> userCoursesJournals = userCoursesJournalRepository.findAllByUser(user);
 

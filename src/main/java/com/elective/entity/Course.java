@@ -46,5 +46,6 @@ public class Course {
 
     private int numberOfStudents;
 
+    @Transient
     private double progress;
 }

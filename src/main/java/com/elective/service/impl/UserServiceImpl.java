@@ -48,12 +48,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(int id) {
-        return userRepository.findById(id);
+        return userRepository.findUserById(id);
     }
 
     @Override
     public UserDTO getUserDTOById(int id) {
-        User user = userRepository.findById(id);
+        User user = userRepository.findUserById(id);
         return UserDTOMapper.INSTANCE.userToUserDTO(user);
     }
 
@@ -72,21 +72,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void blockUser(int id) {
-        User currentUser = userRepository.findById(id);
+        User currentUser = userRepository.findUserById(id);
         currentUser.setBlocked(true);
         userRepository.save(currentUser);
     }
 
     @Override
     public void unblockUser(int id) {
-        User currentUser = userRepository.findById(id);
+        User currentUser = userRepository.findUserById(id);
         currentUser.setBlocked(false);
         userRepository.save(currentUser);
     }
 
     @Override
     public void updateUser(int id, User newUser) {
-        User userToUpdate = userRepository.findById(id);
+        User userToUpdate = userRepository.findUserById(id);
 
         userToUpdate.setId(id);
         userToUpdate.setFirstName(newUser.getFirstName());
@@ -115,15 +115,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserWithImageDTO setImagesForUser(UserDTO userDTO) {
-        Image image = userDTO.getImage();
-
-        if(image == null || image.getName().isEmpty()){
-            image = imageRepository.getImageByName("default-user-photo.png");
+        Image image;
+        if(userDTO.getImage() == null || userDTO.getImage().getName().isEmpty()){
+            image = imageRepository.getImageByName("user.png");
+        }else{
+            image = userDTO.getImage();
         }
+
 
         byte[] imageData = ImageUtil.decompressImage(image.getImage());
         String base64Image = Base64.getEncoder().encodeToString(imageData);
 
-        return new UserWithImageDTO(userDTO.getId(), userDTO.getEmail(), userDTO.getFirstName(), userDTO.getSecondName(), base64Image, userDTO.getRegisteredDate());
+        return new UserWithImageDTO(userDTO.getId(), userDTO.getEmail(), userDTO.getFirstName(), userDTO.getSecondName(), base64Image, userDTO.getRegisteredDate(), userDTO.getLocationCity(), userDTO.getPhone());
+    }
+
+    @Override
+    public void updateUserByUserDTO(UserWithImageDTO newUser) {
+        User userToUpdate = userRepository.findUserById(newUser.getId());
+
+        userToUpdate.setId(newUser.getId());
+        userToUpdate.setFirstName(newUser.getFirstName());
+        userToUpdate.setSecondName(newUser.getSecondName());
+        userToUpdate.setPhone(newUser.getPhone());
+        userToUpdate.setLocationCity(newUser.getLocationCity());
+
+        userRepository.save(userToUpdate);
     }
 }

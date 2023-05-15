@@ -38,7 +38,7 @@ public class UserController {
     @PostMapping("/register")
     public ModelAndView addUser(@ModelAttribute("user") User user){
         userService.saveUser(user, 3);
-        return new ModelAndView("redirect:/courses");
+        return new ModelAndView("redirect:/login");
     }
 
     @GetMapping("/main-page/teachers")
@@ -88,4 +88,35 @@ public class UserController {
         }
         return chunkedCourses;
     }
+    @GetMapping("/main-page/profile/edit")
+    public ModelAndView editProfileView(Model model, Principal principal){
+        int userId = userService.getUserIdByEmail(principal.getName());
+        model.addAttribute("userId", userId);
+
+        UserDTO userDTO = userService.getUserDTOById(userId);
+        UserWithImageDTO userWithImageDTO = userService.setImagesForUser(userDTO);
+        model.addAttribute("user", userWithImageDTO);
+
+        String roleUpperCase = userService.getUserById(userId).getRoles().get(0).getRoleName();
+        String roleCapitalized = roleUpperCase.charAt(0) + roleUpperCase.substring(1).toLowerCase();
+        model.addAttribute("role", roleCapitalized);
+
+        if(roleUpperCase.equals("TEACHER")){
+            List<Course> teacherCourses = courseService.getAllCoursesByTeacherId(userId);
+            List<List<Course>> chunkedCourses = getChunkedCourses(teacherCourses);
+            model.addAttribute("chunkedCourses", chunkedCourses);
+        } else if (roleUpperCase.equals("STUDENT")) {
+            List<Course> studentCourses = courseService.getAllCoursesByStudentId(userId);
+            List<List<Course>> chunkedCourses = getChunkedCourses(studentCourses);
+            model.addAttribute("chunkedCourses", chunkedCourses);
+        }
+        return new ModelAndView("client/edit-profile");
+    }
+
+    @PostMapping("/main-page/profile/edit/{id}")
+    public ModelAndView editProfile(@PathVariable("id") int id, @ModelAttribute("user") UserWithImageDTO user){
+        userService.updateUserByUserDTO(user);
+        return new ModelAndView("redirect:/main-page/profile?userId=" + id);
+    }
+
 }

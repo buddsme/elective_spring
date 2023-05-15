@@ -79,7 +79,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> getAllCoursesByStudentId(int id) {
-        User user = userRepository.findById(id);
+        User user = userRepository.findUserById(id);
         List<UserCoursesJournal> userCoursesJournals = userCoursesJournalRepository.findAllByUser(user);
         List<Course> courses = new ArrayList<>();
         for (UserCoursesJournal journal : userCoursesJournals) {

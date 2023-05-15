@@ -19,4 +19,6 @@ public class UserDTO {
     private boolean isBlocked;
     private Image image;
     private LocalDate registeredDate;
+    private String locationCity;
+    private String phone;
 }

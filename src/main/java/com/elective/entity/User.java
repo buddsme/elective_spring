@@ -47,6 +47,8 @@ public class User {
     private MultipartFile file;
 
     private LocalDate registeredDate;
+    private String locationCity;
+    private String phone;
 
     public User(String email, String password, String firstName, String secondName, boolean blocked, List<Role> role) {
         this.email = email;

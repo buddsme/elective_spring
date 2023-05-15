@@ -90,7 +90,7 @@
     </button>
     <a class="nav-link me-4" href="/main-page/teachers">Teachers</a>
     <a class="nav-link me-4" href="/main-page/topics">Topics</a>
-    <a class="nav-link me-4" href="javascript:void(0)">Profile</a>
+    <a class="nav-link me-4 disabled" href="javascript:void(0)">Profile</a>
 
     <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
@@ -109,8 +109,9 @@
 
         <nav aria-label="breadcrumb" class="main-breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/main-page">Main Page</a></li>
-                <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                <li class="breadcrumb-item"><a th:href="@{/main-page}">Main Page</a></li>
+                <li class="breadcrumb-item"><a th:href="'/main-page/profile?userId=' + ${userId}">User Profile</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit</li>
             </ol>
         </nav>
 
@@ -119,7 +120,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-                            <img th:src="@{'data:image/png;base64,' + ${user.base64Image}}" alt="User Photo"
+                            <img th:src="@{'data:image/png;base64,' + ${user.base64Image}}" alt="Admin"
                                  class="rounded-circle" width="151">
                             <div class="mt-3">
                                 <h4 th:text="${user.firstName} + ' ' + ${user.secondName}"></h4>
@@ -197,57 +198,75 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="row mt-2">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Full Name</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary"
-                                 th:text="${user.firstName} + ' ' + ${user.secondName}"></div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Email</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary" th:text="${user.email}"></div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Phone</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary" th:text="${user.phone}"></div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Address</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary" th:text="${user.locationCity}"></div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <form th:action="@{/main-page/profile/edit}" method="GET">
-                                    <input type="hidden" name="userId" th:value="${userId}">
-                                    <button class="btn btn-primary">Edit</button>
-                                </form>
+                <form th:action="@{/main-page/profile/edit/{id}(id=${user.id})}" method="POST" th:object="${user}">
+                    <div class="form-group">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row mt-2">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">First Name</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" name="firstName" class="form-control"
+                                               th:value="*{firstName}" th:field="*{firstName}">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row mt-2">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Second Name</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" name="secondName" class="form-control"
+                                               th:value="*{secondName}" th:field="*{secondName}">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Phone</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" class="form-control" th:value="*{phone}"
+                                               required
+                                               autofocus
+                                               pattern="^\+?3?8?(0[\s\.-]\d{2}[\s\.-]\d{3}[\s\.-]\d{2}[\s\.-]\d{2})$"
+                                               th:field="*{phone}"
+                                               title="Last phone should match next format: +380 XX XXX XX XX">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Address</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" name="locationCity" class="form-control"
+                                               th:value="*{locationCity} " th:field="*{locationCity}">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
                 <div class="row gutters-sm">
                     <div th:each="chunk : ${chunkedCourses}" class="col-sm-6 mb-3">
                         <div class="card h-100">
                             <div class="card-body">
-                                <span th:if="${role.equalsIgnoreCase('Teacher')}">
-                                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2" th:text="'Journals '"></i></h6>
-                                </span>
-                                <span th:if="${role.equalsIgnoreCase('Student')}">
-                                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2" th:text="'Courses '"></i></h6>
-                                </span>
+                                <div>
+                                    <span th:if="${role == 'Teacher'}">
+                                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2" th:text="'Journals '"></i></h6>
+                                    </span>
+                                    <span th:if="${role == 'Student'}">
+                                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2" th:text="'Courses '"></i></h6>
+                                    </span>
+                                </div>
                                 <div th:each="course : ${chunk}">
                                     <small th:text="${course.courseName}"></small>
                                     <div class="progress mb-3" style="height: 5px">

@@ -28,4 +28,6 @@ public interface UserService {
     List<UserWithImageDTO> setImagesForTeachers(List<UserDTO> teachers);
 
     UserWithImageDTO setImagesForUser(UserDTO userDTO);
+
+    void updateUserByUserDTO(UserWithImageDTO user);
 }
