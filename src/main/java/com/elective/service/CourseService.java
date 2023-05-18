@@ -21,4 +21,7 @@ public interface CourseService {
     void deleteCourse(int id);
 
     List<Course> getAllCoursesByStudentId(int id);
+
+    List<Course> checkCoursesStatus(List<Course> courses);
+
 }

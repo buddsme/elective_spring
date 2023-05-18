@@ -246,7 +246,21 @@
                                 <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2" th:text="'Journals '"></i></h6>
                                 </span>
                                 <span th:if="${role.equalsIgnoreCase('Student')}">
-                                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2" th:text="'Courses '"></i></h6>
+                                    <div class="row">
+                                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2" th:text="'Courses '"></i></h6>
+                                        <div class="dropdown show mb-2">
+                                             <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                                Filter By...
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <a class="dropdown-item" th:href="'/main-page/profile?userId=' + ${userId} + '&filter=ALL'">All</a>
+                                                <a class="dropdown-item" th:href="'/main-page/profile?userId=' + ${userId} + '&filter=NOT_BEGUN'">Not Begun</a>
+                                                <a class="dropdown-item" th:href="'/main-page/profile?userId=' + ${userId} + '&filter=ONGOING'">Ongoing</a>
+                                                <a class="dropdown-item" th:href="'/main-page/profile?userId=' + ${userId} + '&filter=FINISHED'">Finished</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </span>
                                 <div th:each="course : ${chunk}">
                                     <small th:text="${course.courseName}"></small>

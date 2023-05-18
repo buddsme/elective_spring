@@ -4,6 +4,7 @@ import com.elective.entity.Course;
 import com.elective.entity.User;
 import com.elective.entity.dto.UserDTO;
 import com.elective.entity.dto.UserWithImageDTO;
+import com.elective.entity.enums.CourseStatus;
 import com.elective.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -36,13 +38,13 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ModelAndView addUser(@ModelAttribute("user") User user){
+    public ModelAndView addUser(@ModelAttribute("user") User user) {
         userService.saveUser(user, 3);
         return new ModelAndView("redirect:/login");
     }
 
     @GetMapping("/main-page/teachers")
-    public ModelAndView showAllTeachers(Model model, Principal principal){
+    public ModelAndView showAllTeachers(Model model, Principal principal) {
         int userId = userService.getUserIdByEmail(principal.getName());
         model.addAttribute("userId", userId);
 
@@ -54,7 +56,7 @@ public class UserController {
     }
 
     @GetMapping("/main-page/profile")
-    public ModelAndView showProfile(@RequestParam("userId") int id, Model model, Principal principal){
+    public ModelAndView showProfile(@RequestParam(required = false) String filter, @RequestParam("userId") int id, Model model, Principal principal) {
         int userId = userService.getUserIdByEmail(principal.getName());
         model.addAttribute("userId", userId);
 
@@ -66,19 +68,41 @@ public class UserController {
         String roleCapitalized = roleUpperCase.charAt(0) + roleUpperCase.substring(1).toLowerCase();
         model.addAttribute("role", roleCapitalized);
 
-        if(roleUpperCase.equals("TEACHER")){
+        if (roleUpperCase.equals("TEACHER")) {
             List<Course> teacherCourses = courseService.getAllCoursesByTeacherId(id);
+
+            teacherCourses = courseService.checkCoursesStatus(teacherCourses);
+
+            if (!(filter == null) && !filter.equals("ALL")) {
+                CourseStatus filterStatus = CourseStatus.valueOf(filter);
+                teacherCourses = teacherCourses
+                        .stream()
+                        .filter(e -> e.getCourseStatus() == filterStatus)
+                        .collect(Collectors.toList());
+            }
+
             List<List<Course>> chunkedCourses = getChunkedCourses(teacherCourses);
             model.addAttribute("chunkedCourses", chunkedCourses);
         } else if (roleUpperCase.equals("STUDENT")) {
             List<Course> studentCourses = courseService.getAllCoursesByStudentId(id);
+
+            studentCourses = courseService.checkCoursesStatus(studentCourses);
+
+            if (!(filter == null) && !filter.equals("ALL")) {
+                CourseStatus filterStatus = CourseStatus.valueOf(filter);
+                studentCourses = studentCourses
+                        .stream()
+                        .filter(e -> e.getCourseStatus() == filterStatus)
+                        .collect(Collectors.toList());
+            }
+
             List<List<Course>> chunkedCourses = getChunkedCourses(studentCourses);
             model.addAttribute("chunkedCourses", chunkedCourses);
         }
         return new ModelAndView("client/profile");
     }
 
-    private List<List<Course>> getChunkedCourses(List<Course> courses){
+    private List<List<Course>> getChunkedCourses(List<Course> courses) {
         List<List<Course>> chunkedCourses = new ArrayList<>();
         int chunkSize = 5;
         for (int i = 0; i < courses.size(); i += chunkSize) {
@@ -88,8 +112,9 @@ public class UserController {
         }
         return chunkedCourses;
     }
+
     @GetMapping("/main-page/profile/edit")
-    public ModelAndView editProfileView(Model model, Principal principal){
+    public ModelAndView editProfileView(Model model, Principal principal) {
         int userId = userService.getUserIdByEmail(principal.getName());
         model.addAttribute("userId", userId);
 
@@ -101,7 +126,7 @@ public class UserController {
         String roleCapitalized = roleUpperCase.charAt(0) + roleUpperCase.substring(1).toLowerCase();
         model.addAttribute("role", roleCapitalized);
 
-        if(roleUpperCase.equals("TEACHER")){
+        if (roleUpperCase.equals("TEACHER")) {
             List<Course> teacherCourses = courseService.getAllCoursesByTeacherId(userId);
             List<List<Course>> chunkedCourses = getChunkedCourses(teacherCourses);
             model.addAttribute("chunkedCourses", chunkedCourses);
@@ -114,7 +139,7 @@ public class UserController {
     }
 
     @PostMapping("/main-page/profile/edit/{id}")
-    public ModelAndView editProfile(@PathVariable("id") int id, @ModelAttribute("user") UserWithImageDTO user){
+    public ModelAndView editProfile(@PathVariable("id") int id, @ModelAttribute("user") UserWithImageDTO user) {
         userService.updateUserByUserDTO(user);
         return new ModelAndView("redirect:/main-page/profile?userId=" + id);
     }

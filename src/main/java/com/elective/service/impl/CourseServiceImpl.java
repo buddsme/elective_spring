@@ -4,6 +4,7 @@ import com.elective.entity.Course;
 import com.elective.entity.Topic;
 import com.elective.entity.User;
 import com.elective.entity.UserCoursesJournal;
+import com.elective.entity.enums.CourseStatus;
 import com.elective.repositories.CourseRepository;
 import com.elective.repositories.UserCoursesJournalRepository;
 import com.elective.repositories.UserRepository;
@@ -111,5 +112,20 @@ public class CourseServiceImpl implements CourseService {
         return ChronoUnit.DAYS.between(dateStart, dateEnd);
     }
 
-
+    @Override
+    public List<Course> checkCoursesStatus(List<Course> courses) {
+        for(Course course : courses){
+            if(course.getDateStart().isBefore(LocalDate.now()) && course.getDateEnd().isAfter(LocalDate.now())){
+                course.setCourseStatus(CourseStatus.ONGOING);
+            } else if (course.getDateStart().equals(LocalDate.now()) || course.getDateEnd().equals(LocalDate.now())) {
+                course.setCourseStatus(CourseStatus.ONGOING);
+            } else if (course.getDateStart().isAfter(LocalDate.now())) {
+                course.setCourseStatus(CourseStatus.NOT_BEGUN);
+            }else if(course.getDateEnd().isBefore(LocalDate.now())){
+                course.setCourseStatus(CourseStatus.FINISHED);
+            }
+        }
+        List<Course> updatedCourses = courseRepository.saveAll(courses);
+        return updatedCourses;
+    }
 }
