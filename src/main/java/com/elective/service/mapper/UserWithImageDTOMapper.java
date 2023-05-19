@@ -1,7 +1,6 @@
 package com.elective.service.mapper;
 
 import com.elective.entity.User;
-import com.elective.entity.dto.UserDTO;
 import com.elective.entity.dto.UserWithImageDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

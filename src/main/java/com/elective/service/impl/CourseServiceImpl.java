@@ -128,4 +128,11 @@ public class CourseServiceImpl implements CourseService {
         List<Course> updatedCourses = courseRepository.saveAll(courses);
         return updatedCourses;
     }
+
+    @Override
+    public String getCourseNameByJournalId(int journalId) {
+        UserCoursesJournal userCoursesJournal = userCoursesJournalRepository.findById(journalId);
+        Course course = userCoursesJournal.getCourse();
+        return course.getCourseName();
+    }
 }

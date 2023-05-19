@@ -69,6 +69,17 @@
             box-shadow: none !important;
         }
 
+
+         .teacher-link {
+             color: black;
+             text-decoration: none;
+         }
+
+        .teacher-link:hover {
+            color: black;
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body>
@@ -263,7 +274,10 @@
                                     </div>
                                 </span>
                                 <div th:each="course : ${chunk}">
-                                    <small th:text="${course.courseName}"></small>
+                                    <span th:if="${role.equalsIgnoreCase('Teacher')}">
+                                        <h6><a class="teacher-link" th:href="@{/main-page/profile/journal(courseName=${course.courseName})}" th:text="${course.courseName}"></a></h6>
+                                    </span>
+                                    <h6 th:if="${role.equalsIgnoreCase('Student')}" th:text="${course.courseName}"></h6>
                                     <div class="progress mb-3" style="height: 5px">
                                         <div class="progress-bar bg-primary" role="progressbar"
                                              th:style="'width:' + ${course.progress} + '%'"

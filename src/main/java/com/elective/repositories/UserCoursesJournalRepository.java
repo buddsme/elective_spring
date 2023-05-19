@@ -12,4 +12,6 @@ import java.util.List;
 public interface UserCoursesJournalRepository extends JpaRepository<UserCoursesJournal, Integer> {
     List<UserCoursesJournal> findAllByUser(User user);
     List<UserCoursesJournal> findAllByCourse(Course course);
+
+    UserCoursesJournal findById(int id);
 }
