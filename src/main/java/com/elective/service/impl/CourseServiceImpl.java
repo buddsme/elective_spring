@@ -135,4 +135,12 @@ public class CourseServiceImpl implements CourseService {
         Course course = userCoursesJournal.getCourse();
         return course.getCourseName();
     }
+
+    @Override
+    public String getGradeOfCourse(String courseName, String userId) {
+        Course course = courseRepository.findByCourseName(courseName);
+        User user = userRepository.findUserById(Integer.parseInt(userId));
+        UserCoursesJournal userCoursesJournal = userCoursesJournalRepository.findByCourseAndUser(course, user);
+        return String.valueOf(userCoursesJournal.getGrade());
+    }
 }

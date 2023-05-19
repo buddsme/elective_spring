@@ -25,4 +25,6 @@ public interface CourseService {
     List<Course> checkCoursesStatus(List<Course> courses);
 
     String getCourseNameByJournalId(int journalId);
+
+    String getGradeOfCourse(String courseName, String userId);
 }

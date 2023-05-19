@@ -92,13 +92,23 @@ public class UserController {
             List<Course> studentCourses = courseService.getAllCoursesByStudentId(id);
 
             studentCourses = courseService.checkCoursesStatus(studentCourses);
-
-            if (!(filter == null) && !filter.equals("ALL")) {
+            if(filter == null){
+                filter = "ALL";
+            }
+            if (!filter.equals("ALL")) {
                 CourseStatus filterStatus = CourseStatus.valueOf(filter);
                 studentCourses = studentCourses
                         .stream()
                         .filter(e -> e.getCourseStatus() == filterStatus)
                         .collect(Collectors.toList());
+            }
+
+            if (filter.equals("FINISHED") || filter.equals("ALL")) {
+                for (Course course : studentCourses) {
+                    String grade = courseService.getGradeOfCourse(course.getCourseName(), String.valueOf(userId));
+                    course.setGrade(grade);
+
+                }
             }
 
             List<List<Course>> chunkedCourses = getChunkedCourses(studentCourses);
