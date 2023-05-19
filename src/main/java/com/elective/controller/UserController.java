@@ -82,7 +82,12 @@ public class UserController {
             }
 
             List<List<Course>> chunkedCourses = getChunkedCourses(teacherCourses);
-            model.addAttribute("chunkedCourses", chunkedCourses);
+            if(!chunkedCourses.isEmpty()){
+                model.addAttribute("chunkedCourses", chunkedCourses);
+            }else{
+                model.addAttribute("chunkedCourses", new ArrayList<List<Course>>());
+            }
+
         } else if (roleUpperCase.equals("STUDENT")) {
             List<Course> studentCourses = courseService.getAllCoursesByStudentId(id);
 
@@ -97,7 +102,12 @@ public class UserController {
             }
 
             List<List<Course>> chunkedCourses = getChunkedCourses(studentCourses);
-            model.addAttribute("chunkedCourses", chunkedCourses);
+
+            if(!chunkedCourses.isEmpty()){
+                model.addAttribute("chunkedCourses", chunkedCourses);
+            }else{
+                model.addAttribute("chunkedCourses", new ArrayList<List<Course>>());
+            }
         }
         return new ModelAndView("client/profile");
     }

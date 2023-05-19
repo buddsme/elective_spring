@@ -70,10 +70,10 @@
         }
 
 
-         .teacher-link {
-             color: black;
-             text-decoration: none;
-         }
+        .teacher-link {
+            color: black;
+            text-decoration: none;
+        }
 
         .teacher-link:hover {
             color: black;
@@ -250,41 +250,85 @@
                     </div>
                 </div>
                 <div class="row gutters-sm">
-                    <div th:each="chunk : ${chunkedCourses}" class="col-sm-6 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
+                    <div th:if="${chunkedCourses.size() > 0}">
+                        <div th:each="chunk : ${chunkedCourses}" class="col-sm-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
                                 <span th:if="${role.equalsIgnoreCase('Teacher')}">
-                                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2" th:text="'Journals '"></i></h6>
+                                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2"
+                                                                              th:text="'Journals '"></i></h6>
                                 </span>
-                                <span th:if="${role.equalsIgnoreCase('Student')}">
+                                    <span th:if="${role.equalsIgnoreCase('Student')}">
                                     <div class="row">
-                                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2" th:text="'Courses '"></i></h6>
+                                        <h6 class="d-flex align-items-center mb-3"><i
+                                                class="material-icons text-info mr-2" th:text="'Courses '"></i></h6>
                                         <div class="dropdown show mb-2">
-                                             <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                             <a class="btn btn-sm dropdown-toggle" href="#" role="button"
+                                                id="dropdownMenuLink" data-toggle="dropdown"
                                                 aria-haspopup="true" aria-expanded="false">
                                                 Filter By...
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <a class="dropdown-item" th:href="'/main-page/profile?userId=' + ${userId} + '&filter=ALL'">All</a>
-                                                <a class="dropdown-item" th:href="'/main-page/profile?userId=' + ${userId} + '&filter=NOT_BEGUN'">Not Begun</a>
-                                                <a class="dropdown-item" th:href="'/main-page/profile?userId=' + ${userId} + '&filter=ONGOING'">Ongoing</a>
-                                                <a class="dropdown-item" th:href="'/main-page/profile?userId=' + ${userId} + '&filter=FINISHED'">Finished</a>
+                                                <a class="dropdown-item"
+                                                   th:href="'/main-page/profile?userId=' + ${userId} + '&filter=ALL'">All</a>
+                                                <a class="dropdown-item"
+                                                   th:href="'/main-page/profile?userId=' + ${userId} + '&filter=NOT_BEGUN'">Not Begun</a>
+                                                <a class="dropdown-item"
+                                                   th:href="'/main-page/profile?userId=' + ${userId} + '&filter=ONGOING'">Ongoing</a>
+                                                <a class="dropdown-item"
+                                                   th:href="'/main-page/profile?userId=' + ${userId} + '&filter=FINISHED'">Finished</a>
                                             </div>
                                         </div>
                                     </div>
                                 </span>
-                                <div th:each="course : ${chunk}">
+                                    <div th:each="course : ${chunk}">
                                     <span th:if="${role.equalsIgnoreCase('Teacher')}">
-                                        <h6><a class="teacher-link" th:href="@{/main-page/profile/journal(courseName=${course.courseName})}" th:text="${course.courseName}"></a></h6>
+                                        <h6><a class="teacher-link"
+                                               th:href="@{/main-page/profile/journal(courseName=${course.courseName})}"
+                                               th:text="${course.courseName}"></a></h6>
                                     </span>
-                                    <h6 th:if="${role.equalsIgnoreCase('Student')}" th:text="${course.courseName}"></h6>
-                                    <div class="progress mb-3" style="height: 5px">
-                                        <div class="progress-bar bg-primary" role="progressbar"
-                                             th:style="'width:' + ${course.progress} + '%'"
-                                             th:aria-valuenow="${course.progress}" aria-valuemin="0"
-                                             aria-valuemax="100"></div>
+                                        <h6 th:if="${role.equalsIgnoreCase('Student')}"
+                                            th:text="${course.courseName}"></h6>
+                                        <div class="progress mb-3" style="height: 5px">
+                                            <div class="progress-bar bg-primary" role="progressbar"
+                                                 th:style="'width:' + ${course.progress} + '%'"
+                                                 th:aria-valuenow="${course.progress}" aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-3" th:if="${chunkedCourses.isEmpty()}">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <span th:if="${role.equalsIgnoreCase('Teacher')}">
+                                    <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2"
+                                                                                  th:text="'Journals '"></i></h6>
+                                </span>
+                                <span th:if="${role.equalsIgnoreCase('Student')}">
+                                    <div class="row">
+                                        <h6 class="d-flex align-items-center mb-3"><i
+                                                class="material-icons text-info mr-2" th:text="'Courses '"></i></h6>
+                                        <div class="dropdown show mb-2">
+                                            <a class="btn btn-sm dropdown-toggle" href="#" role="button"
+                                               id="dropdownMenuLink2" data-toggle="dropdown"
+                                               aria-haspopup="true" aria-expanded="false">Filter By...
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <a class="dropdown-item"
+                                                   th:href="'/main-page/profile?userId=' + ${userId} + '&filter=ALL'">All</a>
+                                                <a class="dropdown-item"
+                                                   th:href="'/main-page/profile?userId=' + ${userId} + '&filter=NOT_BEGUN'">Not Begun</a>
+                                                <a class="dropdown-item"
+                                                   th:href="'/main-page/profile?userId=' + ${userId} + '&filter=ONGOING'">Ongoing</a>
+                                                <a class="dropdown-item"
+                                                   th:href="'/main-page/profile?userId=' + ${userId} + '&filter=FINISHED'">Finished</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </span>
                             </div>
                         </div>
                     </div>
