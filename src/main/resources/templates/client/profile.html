@@ -80,6 +80,24 @@
             text-decoration: underline;
         }
 
+        .btn-primary {
+            background-color: #556f96 !important;
+            border: 1px solid #556f96 !important;
+            color: #fff !important;
+        }
+
+        .btn-primary:hover {
+            background-color: rgb(54, 73, 98) !important;
+        }
+
+        .bg-custom {
+            background-color: #556f96 !important;
+        }
+
+        .text-custom {
+            color: #556f96 !important;
+        }
+
     </style>
 </head>
 <body>
@@ -255,14 +273,14 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <span th:if="${role.equalsIgnoreCase('Teacher')}">
-                                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2"
+                                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-custom mr-2"
                                                                               th:text="'Journals '"></i>
                                         </h6>
                                     </span>
                                     <span th:if="${role.equalsIgnoreCase('Student')}">
                                         <div class="d-flex flex-row">
                                             <h6 class="d-flex align-items-center mb-3 me-2"><i
-                                                    class="material-icons text-info mr-2" th:text="'Courses '"></i></h6>
+                                                    class="material-icons text-custom mr-2" th:text="'Courses '"></i></h6>
                                             <div class="dropdown show mb-3">
                                                  <a class="btn btn-sm dropdown-toggle" href="#" role="button"
                                                     id="dropdownMenuLink" data-toggle="dropdown"
@@ -297,7 +315,7 @@
                                                 <span class="text-secondary ms-2" th:text="'grade: ' + ${course.grade}"></span>
                                             </div>
                                             <div class="progress mb-3" style="height: 5px">
-                                                <div class="progress-bar bg-primary" role="progressbar"
+                                                <div class="progress-bar bg-custom" role="progressbar"
                                                      th:style="'width:' + ${course.progress} + '%'"
                                                      th:aria-valuenow="${course.progress}" aria-valuemin="0"
                                                      aria-valuemax="100">
