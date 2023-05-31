@@ -6,6 +6,7 @@ import com.elective.entity.User;
 import com.elective.entity.UserCoursesJournal;
 import com.elective.entity.enums.CourseStatus;
 import com.elective.repositories.CourseRepository;
+import com.elective.repositories.TopicRepository;
 import com.elective.repositories.UserCoursesJournalRepository;
 import com.elective.repositories.UserRepository;
 import com.elective.service.CourseService;
@@ -23,10 +24,13 @@ public class CourseServiceImpl implements CourseService {
     private final UserCoursesJournalRepository userCoursesJournalRepository;
     private final UserRepository userRepository;
 
-    public CourseServiceImpl(CourseRepository courseRepository, UserCoursesJournalRepository userCoursesJournalRepository, UserRepository userRepository) {
+    private final TopicRepository topicRepository;
+
+    public CourseServiceImpl(CourseRepository courseRepository, UserCoursesJournalRepository userCoursesJournalRepository, UserRepository userRepository, TopicRepository topicRepository) {
         this.courseRepository = courseRepository;
         this.userCoursesJournalRepository = userCoursesJournalRepository;
         this.userRepository = userRepository;
+        this.topicRepository = topicRepository;
     }
 
     @Override
@@ -115,13 +119,18 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> checkCoursesStatus(List<Course> courses) {
         for(Course course : courses){
-            if(course.getDateStart().isBefore(LocalDate.now()) && course.getDateEnd().isAfter(LocalDate.now())){
+            if(course.getDateEnd().plusDays(5).isBefore(LocalDate.now())){
+                courseRepository.deleteById(course.getIdCourse());
+                courses.remove(course);
+                break;
+            }
+            else if(course.getDateStart().isBefore(LocalDate.now()) && course.getDateEnd().isAfter(LocalDate.now())){
                 course.setCourseStatus(CourseStatus.ONGOING);
             } else if (course.getDateStart().equals(LocalDate.now()) || course.getDateEnd().equals(LocalDate.now())) {
                 course.setCourseStatus(CourseStatus.ONGOING);
             } else if (course.getDateStart().isAfter(LocalDate.now())) {
                 course.setCourseStatus(CourseStatus.NOT_BEGUN);
-            }else if(course.getDateEnd().isBefore(LocalDate.now())){
+            } else if(course.getDateEnd().isBefore(LocalDate.now())){
                 course.setCourseStatus(CourseStatus.FINISHED);
             }
         }
@@ -142,5 +151,17 @@ public class CourseServiceImpl implements CourseService {
         User user = userRepository.findUserById(Integer.parseInt(userId));
         UserCoursesJournal userCoursesJournal = userCoursesJournalRepository.findByCourseAndUser(course, user);
         return String.valueOf(userCoursesJournal.getGrade());
+    }
+
+    @Override
+    public List<Course> filterByTopicsList(List<String> selectedTopics) {
+        List<Course> courses = new ArrayList<>();
+        for(String topic : selectedTopics){
+            List<Course> topicCourses = courseRepository.findAllByTopic(topicRepository.getTopicByTopicName(topic));
+            if (topicCourses != null) {
+                courses.addAll(topicCourses);
+            }
+        }
+        return courses;
     }
 }

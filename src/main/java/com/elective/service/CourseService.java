@@ -27,4 +27,6 @@ public interface CourseService {
     String getCourseNameByJournalId(int journalId);
 
     String getGradeOfCourse(String courseName, String userId);
+
+    List<Course> filterByTopicsList(List<String> selectedTopics);
 }
