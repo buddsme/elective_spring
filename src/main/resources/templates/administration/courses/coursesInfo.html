@@ -9,7 +9,7 @@
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
           crossorigin="anonymous">
 </head>
-<body>
+<body style="background: #e2e8f0">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -50,18 +50,18 @@
         </div>
     </div>
 
-    <div class="dropdown show mb-2">
-        <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">
-            Sort By...
-        </a>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="/main-page?sort=name(a-z)">Name (a-z)</a>
-            <a class="dropdown-item" href="/main-page?sort=name(z-a)">Name (z-a)</a>
-            <a class="dropdown-item" href="/main-page?sort=duration">Duration</a>
-            <a class="dropdown-item" href="/main-page?sort=number-of-students">Number of Students</a>
-        </div>
-    </div>
+<!--    <div class="dropdown show mb-2">-->
+<!--        <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"-->
+<!--           aria-haspopup="true" aria-expanded="false">-->
+<!--            Sort By...-->
+<!--        </a>-->
+<!--        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">-->
+<!--            <a class="dropdown-item" href="/main-page?sort=name(a-z)">Name (a-z)</a>-->
+<!--            <a class="dropdown-item" href="/main-page?sort=name(z-a)">Name (z-a)</a>-->
+<!--            <a class="dropdown-item" href="/main-page?sort=duration">Duration</a>-->
+<!--            <a class="dropdown-item" href="/main-page?sort=number-of-students">Number of Students</a>-->
+<!--        </div>-->
+<!--    </div>-->
 
 
     <div class="col-md">
@@ -79,7 +79,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="course: ${courses}">
+            <tr th:each="course : ${courses}">
                 <td th:text="${course.getCourseName()}"></td>
                 <td th:text="${course.getTopic().getTopicName()}"></td>
                 <td th:text="${course.getTeacher().getFirstName() + ' ' + course.getTeacher().getSecondName()}"></td>

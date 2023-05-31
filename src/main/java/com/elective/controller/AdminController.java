@@ -136,7 +136,8 @@ public class AdminController {
     @GetMapping("/courses")
     public ModelAndView listCourses(Model model) {
 
-        model.addAttribute("courses", courseService.getAllCourses());
+        List<Course> courses = courseService.getAllCourses();
+        model.addAttribute("courses", courses);
 
         List<Topic> topics = topicService.getAllTopics();
         model.addAttribute("topics", topics);

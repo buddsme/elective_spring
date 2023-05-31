@@ -33,7 +33,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <a class="nav-link me-4" href="/main-page/teachers">Teachers</a>
-    <a class="nav-link me-4" href="/main-page/topics">Topics</a>
+    <a class="nav-link me-4" href="javascript:void(0)">Topics</a>
     <form th:action="@{/main-page/profile}" method="GET">
         <input type="hidden" name="userId" th:value="${userId}">
         <button class="nav-link me-4">Profile</button>
@@ -59,18 +59,6 @@
 
 
         <div class="container">
-            <!--    <div class="dropdown show mb-2">-->
-            <!--      <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"-->
-            <!--         aria-haspopup="true" aria-expanded="false">-->
-            <!--        Sort By...-->
-            <!--      </a>-->
-            <!--      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">-->
-            <!--        <a class="dropdown-item" href="/main-page?sort=name(a-z)">Name (a-z)</a>-->
-            <!--        <a class="dropdown-item" href="/main-page?sort=name(z-a)">Name (z-a)</a>-->
-            <!--        <a class="dropdown-item" href="/main-page?sort=duration">Duration</a>-->
-            <!--        <a class="dropdown-item" href="/main-page?sort=number-of-students">Number of Students</a>-->
-            <!--      </div>-->
-            <!--    </div>-->
             <div class="list-group list-group-flush">
                 <div th:each="topic : ${topics}" class="list-group-item d-inline-block text-center">
                     <div class="d-flex justify-content-center">

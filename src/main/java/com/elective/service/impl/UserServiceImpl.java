@@ -61,6 +61,8 @@ public class UserServiceImpl implements UserService {
     public int saveUser(User user, int roleId) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(rolesRepository.getRoleByIdRole(roleId));
+        user.setPhone("No info");
+        user.setLocationCity("No info");
         user.setRegisteredDate(LocalDate.now());
         return userRepository.save(user).getId();
     }
