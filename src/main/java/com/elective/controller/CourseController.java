@@ -114,14 +114,4 @@ public class CourseController {
         model.addAttribute("courses", courses);
         return new ModelAndView("/client/teacherCourses");
     }
-
-    @GetMapping("/main-page/topics")
-    public ModelAndView showTopics(Model model, Principal principal){
-        int userId = userService.getUserIdByEmail(principal.getName());
-        model.addAttribute("userId", userId);
-
-        List<Topic> topics = topicService.getAllTopics();
-        model.addAttribute("topics", topics);
-        return new ModelAndView("client/topics");
-    }
 }

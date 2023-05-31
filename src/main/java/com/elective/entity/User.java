@@ -45,7 +45,6 @@ public class User {
     private Image image;
     @Transient
     private MultipartFile file;
-
     private LocalDate registeredDate;
     private String locationCity;
     private String phone;
