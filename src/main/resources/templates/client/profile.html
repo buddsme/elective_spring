@@ -98,6 +98,18 @@
             color: #556f96 !important;
         }
 
+        .text-red {
+            color: red;
+            font-size: 13px;
+            border: #ffffff;
+            background-color: #ffffff;
+            font-weight: bold;
+        }
+
+        .text-red:hover {
+            color: red;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -273,14 +285,16 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <span th:if="${role.equalsIgnoreCase('Teacher')}">
-                                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-custom mr-2"
-                                                                              th:text="'Journals '"></i>
+                                        <h6 class="d-flex align-items-center mb-3"><i
+                                                class="material-icons text-custom mr-2"
+                                                th:text="'Journals '"></i>
                                         </h6>
                                     </span>
                                     <span th:if="${role.equalsIgnoreCase('Student')}">
                                         <div class="d-flex flex-row">
                                             <h6 class="d-flex align-items-center mb-3 me-2"><i
-                                                    class="material-icons text-custom mr-2" th:text="'Courses '"></i></h6>
+                                                    class="material-icons text-custom mr-2"
+                                                    th:text="'Courses '"></i></h6>
                                             <div class="dropdown show mb-3">
                                                  <a class="btn btn-sm dropdown-toggle" href="#" role="button"
                                                     id="dropdownMenuLink" data-toggle="dropdown"
@@ -301,19 +315,31 @@
                                         </div>
                                     </span>
                                     <div th:each="course : ${chunk}">
-                                    <span th:if="${role.equalsIgnoreCase('Teacher')}">
-                                        <h6><a class="teacher-link"
+                                        <span th:if="${role.equalsIgnoreCase('Teacher')}">
+                                            <h6><a class="teacher-link"
                                                th:href="@{/main-page/profile/journal(courseName=${course.courseName})}"
                                                th:text="${course.courseName}"></a></h6>
-                                    </span>
+                                        </span>
                                         <div th:if="${role.equalsIgnoreCase('Student')}">
-                                            <h6 th:if="${course.courseStatus.name() != 'FINISHED'}"
-                                                th:text="${course.courseName}">
-                                            </h6>
-                                            <div class="d-flex flex-row" th:if="${course.courseStatus.name() == 'FINISHED'}">
-                                                <h6 th:text="${course.courseName}"></h6>
-                                                <span class="text-secondary ms-2" th:text="'grade: ' + ${course.grade}"></span>
+                                            <div class="d-flex">
+                                                <h6 th:if="${course.courseStatus.name() != 'FINISHED'}"
+                                                    th:text="${course.courseName}">
+                                                </h6>
+                                                <div th:if="${course.courseStatus.name() == 'FINISHED'}">
+                                                    <h6 th:text="${course.courseName}"></h6>
+                                                    <span class="text-secondary ms-2"
+                                                          th:text="'grade: ' + ${course.grade}"></span>
+                                                </div>
+                                                <div class="ms-auto"
+                                                     th:if="${course.courseStatus.name() != 'FINISHED'}">
+                                                    <form th:action="@{/profile/cancel-course}" method="post">
+                                                        <input type="hidden" name="courseId"
+                                                               th:value="${course.idCourse}">
+                                                        <button type="submit" class="text-red">Cancel</button>
+                                                    </form>
+                                                </div>
                                             </div>
+
                                             <div class="progress mb-3" style="height: 5px">
                                                 <div class="progress-bar bg-custom" role="progressbar"
                                                      th:style="'width:' + ${course.progress} + '%'"
@@ -321,6 +347,7 @@
                                                      aria-valuemax="100">
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>

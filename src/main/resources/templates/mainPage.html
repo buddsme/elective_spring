@@ -211,14 +211,9 @@
                               class="badge badge-soft-finished">Finished</span>
                     </div>
                     <div class="mt-2">
-                        <span class="text-muted d-block mb-1"><i class="fa fa-calendar" aria-hidden="true"
-                                                                 th:text="' Starts on ' + ${course.dateStart}"></i></span>
-                        <span class="text-muted d-block mb-1"><i class="fa fa-calendar" aria-hidden="true"
-                                                                 th:text="' Finished on ' + ${course.dateEnd}"></i></span>
-                        <span class="text-muted d-block mb-1"><i class="fa fa-hourglass-start" aria-hidden="true"
-                                                                 th:text="' Duration ' + ${course.duration} + ' days'"></i></span>
-                        <span class="text-muted d-block"><i class="fa fa-user-circle-o" aria-hidden="true"
-                                                            th:text="' ' + ${course.numberOfStudents + ' students on course'}"></i></span>
+                        <span class="text-muted d-block mb-1"><i class="fa fa-hourglass-start" aria-hidden="true" th:text="' Start on ' + ${course.dateStart}"></i></span>
+                        <span class="text-muted d-block mb-1"><i class="fa fa-hourglass-end" aria-hidden="true" th:text="' Finish on ' + ${course.dateEnd}"></i></span>
+                        <span class="text-muted d-block"><i class="fa fa-user-circle-o" aria-hidden="true" th:text="' ' + ${course.numberOfStudents + ' students on course'}"></i></span>
                     </div>
                     <div class="d-flex justify-content-center mt-3">
                         <a href="#" class="btn btn-primary">View Details</a>

@@ -14,4 +14,6 @@ public interface UserCoursesJournalService {
     List<UserCourseJournalDTO> findAllJournalsByCourseName(String courseName);
 
     void updateUserGrade(int journalId, int newGrade);
+
+    void deleteUserOnCourse(int courseId, int userId);
 }

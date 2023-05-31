@@ -164,4 +164,10 @@ public class UserController {
         return new ModelAndView("redirect:/main-page/profile?userId=" + id);
     }
 
+    @PostMapping("/profile/cancel-course")
+    public ModelAndView deleteUserOnCourse(@RequestParam("courseId") int courseId, Principal principal){
+        int userId = userService.getUserIdByEmail(principal.getName());
+        userCoursesJournalService.deleteUserOnCourse(courseId, userId);
+        return new ModelAndView("redirect:/main-page/profile?userId=" + userId);
+    }
 }

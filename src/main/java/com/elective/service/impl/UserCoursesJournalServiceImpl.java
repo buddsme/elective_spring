@@ -11,12 +11,12 @@ import com.elective.repositories.UserRepository;
 import com.elective.service.UserCoursesJournalService;
 import com.elective.service.mapper.UserCourseJournalDTOMapper;
 import com.elective.service.mapper.UserInitialsDTOMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserCoursesJournalServiceImpl implements UserCoursesJournalService {
@@ -88,5 +88,14 @@ public class UserCoursesJournalServiceImpl implements UserCoursesJournalService 
         UserCoursesJournal userCoursesJournal = userCoursesJournalRepository.findById(journalId);
         userCoursesJournal.setGrade(newGrade);
         userCoursesJournalRepository.save(userCoursesJournal);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUserOnCourse(int courseId, int userId) {
+        Course course = courseRepository.findByIdCourse(courseId);
+        User user = userRepository.findUserById(userId);
+        UserCoursesJournal userCoursesJournal = userCoursesJournalRepository.findByCourseAndUser(course, user);
+        userCoursesJournalRepository.deleteUserCoursesJournalById(userCoursesJournal.getId());
     }
 }
