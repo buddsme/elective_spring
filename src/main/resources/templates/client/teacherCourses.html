@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+
+
+    <title>Elective</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            margin-top: 0;
+            background-color: #e2e8f0;
+        }
+
+        .shadow {
+            box-shadow: 0 0 3px rgb(53 64 78 / 20%) !important;
+        }
+
+        .rounded {
+            border-radius: 5px !important;
+        }
+
+        .bg-light {
+            background-color: #f7f8fa !important;
+        }
+
+        .bg-primary, .btn-primary, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.focus, .btn-outline-primary:not(:disabled):not(.disabled):active, .badge-primary, .nav-pills .nav-link.active, .pagination .active a, .custom-control-input:checked ~ .custom-control-label:before, #preloader #status .spinner > div, .social-icon li a:hover, .back-to-top:hover, .back-to-home a, ::selection, #topnav .navbar-toggle.open span:hover, .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots.clickable .owl-dot:hover span, .watch-video a .play-icon-circle, .sidebar .widget .tagcloud > a:hover, .flatpickr-day.selected, .flatpickr-day.selected:hover, .tns-nav button.tns-nav-active, .form-check-input.form-check-input:checked {
+            background-color: #556f96 !important;
+        }
+
+        .badge {
+            padding: 5px 8px;
+            border-radius: 3px;
+            letter-spacing: 0.5px;
+            font-size: 12px;
+        }
+
+        .btn-primary, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.focus, .btn-outline-primary:not(:disabled):not(.disabled):active {
+            box-shadow: 0 3px 7px rgb(85, 111, 150) !important;
+        }
+
+        .btn-primary, .btn-outline-primary, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.focus, .btn-outline-primary:not(:disabled):not(.disabled):active, .bg-soft-primary .border, .alert-primary, .alert-outline-primary, .badge-outline-primary, .nav-pills .nav-link.active, .pagination .active a, .form-group .form-control:focus, .form-group .form-control.active, .custom-control-input:checked ~ .custom-control-label:before, .custom-control-input:focus ~ .custom-control-label::before, .form-control:focus, .social-icon li a:hover, #topnav .has-submenu.active.active .menu-arrow, #topnav.scroll .navigation-menu > li:hover > .menu-arrow, #topnav.scroll .navigation-menu > li.active > .menu-arrow, #topnav .navigation-menu > li:hover > .menu-arrow, .flatpickr-day.selected, .flatpickr-day.selected:hover, .form-check-input:focus, .form-check-input.form-check-input:checked, .container-filter li.active, .container-filter li:hover {
+            border-color: #556f96 !important;
+        }
+
+        .bg-primary, .btn-primary, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.focus, .btn-outline-primary:not(:disabled):not(.disabled):active, .badge-primary, .nav-pills .nav-link.active, .pagination .active a, .custom-control-input:checked ~ .custom-control-label:before, #preloader #status .spinner > div, .social-icon li a:hover, .back-to-top:hover, .back-to-home a, ::selection, #topnav .navbar-toggle.open span:hover, .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots.clickable .owl-dot:hover span, .watch-video a .play-icon-circle, .sidebar .widget .tagcloud > a:hover, .flatpickr-day.selected, .flatpickr-day.selected:hover, .tns-nav button.tns-nav-active, .form-check-input.form-check-input:checked {
+            background-color: #556f96 !important;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            outline: none;
+            text-decoration: none;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
+        .btn-primary {
+            background-color: #556f96 !important;
+            border: 1px solid #556f96 !important;
+            color: #fff !important;
+            box-shadow: 0 3px 7px rgb(85, 111, 150);
+        }
+
+        .btn-primary:hover {
+            background-color: rgb(54, 73, 98) !important;
+        }
+
+        button.nav-link {
+            border: none !important;
+            background-color: #f7f8fa !important;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .badge-soft-not-begun {
+            color: #63ad6f !important;
+            background-color: rgba(99, 173, 111, .1);
+        }
+
+        .badge-soft-ongoing {
+            color: #8f880a !important;
+            background-color: rgba(243, 224, 17, 0.1);
+        }
+
+        .badge-soft-finished {
+            color: #f56e6e !important;
+            background-color: rgba(245, 110, 110, .1);
+         }
+    </style>
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<nav class="navbar navbar-expand-lg navbar-light bg-light ">
+    <a class="navbar-brand ps-4 pe-4" href="/main-page">Electives</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="nav-link me-4" href="/main-page/teachers">Teachers</a>
+    <a class="nav-link me-4" href="/main-page/topics">Topics</a>
+    <form th:action="@{/main-page/profile}" method="GET">
+        <input type="hidden" name="userId" th:value="${userId}">
+        <button class="nav-link me-4">Profile</button>
+    </form>
+    <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+            <div sec:authorize="isAuthenticated()">
+                <a class="nav-link me-2" th:href="@{/logout}">Log out</a>
+            </div>
+            <div class="d-flex flex-row" sec:authorize="isAnonymous()">
+                <a class="nav-link" th:href="@{/login}">Log in</a>
+                <a class="nav-link me-2" th:href="@{/register}">Sign up</a>
+            </div>
+        </ul>
+    </div>
+</nav>
+
+<div class="container pt-4">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-center">
+            <h1 th:text="'Сourses of '${initials}"></h1>
+        </div>
+    </div>
+    <div class="dropdown show mb">
+        <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+            Sort By...
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" th:href="@{'/main-page/teacher/courses?teacherId=' + ${teacherId} + '&sort=name(a-z)'}">Name (a-z)</a>
+            <a class="dropdown-item" th:href="@{'/main-page/teacher/courses?teacherId=' + ${teacherId} + '&sort=name(z-a)'}">Name (z-a)</a>
+            <a class="dropdown-item" th:href="@{'/main-page/teacher/courses?teacherId=' + ${teacherId} + '&sort=duration'}">Duration</a>
+            <a class="dropdown-item" th:href="@{'/main-page/teacher/courses?teacherId=' + ${teacherId} + '&sort=number-of-students'}">Number of Students</a>
+        </div>
+    </div>
+    <div class="row">
+        <div th:each="course : ${courses}" class="col-lg-4 col-md-6 col-12 pt-2">
+            <div class="card border-0 bg-light rounded shadow">
+                <div class="card-body p-4">
+                    <span class="badge rounded-pill bg-primary float-md-end mb-3 mb-sm-0" th:text="${course.topic.topicName}"></span>
+                    <div class="flex-1">
+                        <h5 class="font-size-16 mb-1"><a class="text-dark"
+                                                         th:text="${course.courseName}"></a>
+                        </h5>
+                        <span th:if="${course.courseStatus.name().equalsIgnoreCase('not_begun')}" class="badge badge-soft-not-begun">Not Begun</span>
+                        <span th:if="${course.courseStatus.name().equalsIgnoreCase('ongoing')}" class="badge badge-soft-ongoing">Ongoing</span>
+                        <span th:if="${course.courseStatus.name().equalsIgnoreCase('finished')}" class="badge badge-soft-finished">Finished</span>
+                    </div>
+                    <div class="mt-2">
+                        <span class="text-muted d-block mb-1"><i class="fa fa-calendar" aria-hidden="true" th:text="' Starts on ' + ${course.dateStart}"></i></span>
+                        <span class="text-muted d-block mb-1"><i class="fa fa-calendar" aria-hidden="true" th:text="' Finished on ' + ${course.dateEnd}"></i></span>
+                        <span class="text-muted d-block mb-1"><i class="fa fa-hourglass-start" aria-hidden="true" th:text="' Duration ' + ${course.duration} + ' days'"></i></span>
+                        <span class="text-muted d-block"><i class="fa fa-user-circle-o" aria-hidden="true" th:text="' ' + ${course.numberOfStudents + ' students on course'}"></i></span>
+                    </div>
+                    <div class="d-flex justify-content-center mt-3">
+                        <a href="#" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>
