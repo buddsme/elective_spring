@@ -3,6 +3,7 @@ package com.elective.controller;
 import com.elective.entity.Course;
 import com.elective.entity.Topic;
 import com.elective.entity.User;
+import com.elective.entity.dto.TopicDTO;
 import com.elective.service.CourseService;
 import com.elective.service.TopicService;
 import com.elective.service.UserService;
@@ -61,7 +62,6 @@ public class CourseController {
 
         model.addAttribute("topics", topicService.getAllTopics());
 
-        userCoursesJournalService.findUserAssignedCourses(userId, courses);
         userCoursesJournalService.countStudentsOnCourses(courses);
         courseService.checkCoursesStatus(courses);
 
@@ -112,6 +112,34 @@ public class CourseController {
             }
         }
         model.addAttribute("courses", courses);
-        return new ModelAndView("/client/teacherCourses");
+        return new ModelAndView("/client/teacher-courses");
+    }
+
+    @GetMapping("/main-page/course")
+    public ModelAndView showCourseDetails(@RequestParam("courseId") int courseId, Model model, Principal principal){
+
+        int userId = userService.getUserIdByEmail(principal.getName());
+        model.addAttribute("userId", userId);
+
+        Course course = courseService.getCourseById(courseId);
+        userCoursesJournalService.findUserAssignedCourse(userId, course);
+        userCoursesJournalService.countStudentsOnCourse(course);
+        model.addAttribute("course", course);
+
+        TopicDTO topic = topicService.setImageToTopic(course.getTopic());
+        model.addAttribute("topic", topic);
+
+
+
+        return new ModelAndView("/client/course-details");
+    }
+
+    @GetMapping("/main-page/courses/topic")
+    public ModelAndView showTopicCourses(@RequestParam("topicName") String topicName, Model model){
+        Topic topic = topicService.getTopicByTopicName(topicName);
+        List<Course> topicCourses = courseService.findAllByTopic(topic);
+        model.addAttribute("courses", topicCourses);
+        model.addAttribute("topicName", topicName);
+        return new ModelAndView("/client/topic-courses");
     }
 }

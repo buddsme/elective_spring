@@ -66,7 +66,6 @@ public class AdminController {
             mav.addObject("user", user);
             mav.addObject("role", role);
         }
-
         return mav;
     }
 
@@ -210,7 +209,16 @@ public class AdminController {
     }
 
     @PostMapping("/topics/add-topic")
-    public ModelAndView saveTopic(@ModelAttribute("topic") Topic topic) {
+    public ModelAndView saveTopic(@RequestParam(value = "image", required = false) MultipartFile file, @ModelAttribute("topic") Topic topic,
+                                 Errors validationErrors) throws IOException {
+
+        validationErrors.rejectValue("file", "rejected value");
+        topic.setImage(imageRepository.save(Image.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .image(ImageUtil.compressImage(file.getBytes()))
+                .build()));
+
         topicService.addTopic(topic);
         return new ModelAndView("redirect:/admin/topics");
     }

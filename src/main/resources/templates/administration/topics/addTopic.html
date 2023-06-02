@@ -37,11 +37,18 @@
         <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
             <h1 class="text-center">Add New Topic</h1>
             <div class="card-body">
-                <form th:action="@{/admin/topics/add-topic}" th:object="${topic}" method="POST">
+                <form th:action="@{/admin/topics/add-topic}" th:object="${topic}" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label>Topic Name</label>
-                        <input type="text" name="courseName" th:field="*{topicName}" class="form-control mb-2"
-                               placeholder="Enter the topic name">
+                        <div>
+                            <label>Topic Name</label>
+                            <input type="text" name="courseName" th:field="*{topicName}" class="form-control mb-2" placeholder="Enter the topic name" required>
+                        </div>
+
+                        <div>
+                            <label for="image">Photo:</label>
+                            <input type="file" id="image" name="image" class="form-control-file mb-2"
+                                   accept="image/png, image/jpg, image/jpeg" th:field="*{image}">
+                        </div>
 
                         <div class="footer-body">
                             <button type="submit" class="btn btn-primary">Submit</button>

@@ -93,19 +93,7 @@
         .badge-soft-finished {
             color: #f56e6e !important;
             background-color: rgba(245, 110, 110, .1);
-        }
-
-        .dropdown-menu {
-            max-height: 250px;
-            overflow-y: auto;
-        }
-        .btn-sm-custom {
-            padding: 0.25rem 0.5rem;
-            font-size: 14px;
-            line-height: 1.5;
-            border-radius: 10px;
-            width: 100px;
-        }
+         }
     </style>
 </head>
 <body>
@@ -120,7 +108,7 @@
         crossorigin="anonymous"></script>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 <nav class="navbar navbar-expand-lg navbar-light bg-light ">
-    <a class="navbar-brand ps-4 pe-4" href="javascript:void(0)">Electives</a>
+    <a class="navbar-brand ps-4 pe-4" href="/main-page">Electives</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -146,68 +134,33 @@
 <div class="container pt-4">
     <div class="d-flex justify-content-center align-items-center h-100">
         <div class="text-center">
-            <h1>Welcome on Main Page!</h1>
+            <h1 th:text="'Сourses of ' + ${initials}"></h1>
         </div>
     </div>
-    <div class="d-flex flex-row">
-        <div class="dropdown show mb">
-            <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="sort" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">
-                Sort By...
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="/main-page?sort=name(a-z)">Name (a-z)</a>
-                <a class="dropdown-item" href="/main-page?sort=name(z-a)">Name (z-a)</a>
-                <a class="dropdown-item" href="/main-page?sort=duration">Duration</a>
-                <a class="dropdown-item" href="/main-page?sort=number-of-students">Number of Students</a>
-            </div>
-        </div>
-        <div class="ms-2">
-            <form th:action="@{/main-page}" method="get">
-                <div class="form-group">
-                    <div class="dropdown show mb">
-                        <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="filter" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            Topics
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-item">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="all" name="topics" th:value="'All'">
-                                    <label class="form-check-label" th:text="'All'"></label>
-                                </div>
-                            </div>
-                            <div class="dropdown-item" th:each="topic : ${topics}">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="topic" name="topics" th:value="${topic.topicName}">
-                                    <label class="form-check-label" th:for="${'topic-' + topic.topicName}" th:text="${topic.topicName}"></label>
-                                </div>
-                            </div>
-                            <div class="dropdown-item d-flex justify-content-center">
-                                <button type="submit" class="btn btn-sm-custom btn-primary">Filter</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
+    <div class="dropdown show mb">
+        <a class="btn btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
+            Sort By...
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" th:href="@{'/main-page/teacher/courses?teacherId=' + ${teacherId} + '&sort=name(a-z)'}">Name (a-z)</a>
+            <a class="dropdown-item" th:href="@{'/main-page/teacher/courses?teacherId=' + ${teacherId} + '&sort=name(z-a)'}">Name (z-a)</a>
+            <a class="dropdown-item" th:href="@{'/main-page/teacher/courses?teacherId=' + ${teacherId} + '&sort=duration'}">Duration</a>
+            <a class="dropdown-item" th:href="@{'/main-page/teacher/courses?teacherId=' + ${teacherId} + '&sort=number-of-students'}">Number of Students</a>
         </div>
     </div>
     <div class="row">
         <div th:each="course : ${courses}" class="col-lg-4 col-md-6 col-12 pt-2">
             <div class="card border-0 bg-light rounded shadow">
                 <div class="card-body p-4">
-                    <span class="badge rounded-pill bg-primary float-md-end mb-3 mb-sm-0"
-                          th:text="${course.topic.topicName}"></span>
+                    <span class="badge rounded-pill bg-primary float-md-end mb-3 mb-sm-0" th:text="${course.topic.topicName}"></span>
                     <div class="flex-1">
                         <h5 class="font-size-16 mb-1"><a class="text-dark"
                                                          th:text="${course.courseName}"></a>
                         </h5>
-                        <span th:if="${course.courseStatus.name().equalsIgnoreCase('not_begun')}"
-                              class="badge badge-soft-not-begun">Not Begun</span>
-                        <span th:if="${course.courseStatus.name().equalsIgnoreCase('ongoing')}"
-                              class="badge badge-soft-ongoing">Ongoing</span>
-                        <span th:if="${course.courseStatus.name().equalsIgnoreCase('finished')}"
-                              class="badge badge-soft-finished">Finished</span>
+                        <span th:if="${course.courseStatus.name().equalsIgnoreCase('not_begun')}" class="badge badge-soft-not-begun">Not Begun</span>
+                        <span th:if="${course.courseStatus.name().equalsIgnoreCase('ongoing')}" class="badge badge-soft-ongoing">Ongoing</span>
+                        <span th:if="${course.courseStatus.name().equalsIgnoreCase('finished')}" class="badge badge-soft-finished">Finished</span>
                     </div>
                     <div class="mt-2">
                         <span class="text-muted d-block mb-1"><i class="fa fa-hourglass-start" aria-hidden="true" th:text="' Start on ' + ${course.dateStart}"></i></span>
@@ -219,7 +172,6 @@
                             <input type="hidden" name="courseId" th:value="${course.idCourse}">
                             <button type="submit" class="btn btn-primary">View Details</button>
                         </form>
-
                     </div>
                 </div>
             </div>

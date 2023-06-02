@@ -7,9 +7,12 @@ import java.util.List;
 
 
 public interface UserCoursesJournalService {
-    void findUserAssignedCourses(int userId, List<Course> courses);
+
+    void findUserAssignedCourse(int userId, Course course);
 
     void countStudentsOnCourses(List<Course> course);
+
+    void countStudentsOnCourse(Course course);
 
     List<UserCourseJournalDTO> findAllJournalsByCourseName(String courseName);
 

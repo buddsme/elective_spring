@@ -47,17 +47,15 @@ public class UserCoursesJournalServiceImpl implements UserCoursesJournalService 
     }
 
     @Override
-    public void findUserAssignedCourses(int userId, List<Course> courses) {
+    public void findUserAssignedCourse(int userId, Course course) {
         User user = userRepository.findUserById(userId);
 
         List<UserCoursesJournal> userCoursesJournals = userCoursesJournalRepository.findAllByUser(user);
 
-        for (Course course : courses) {
-            for (UserCoursesJournal journal : userCoursesJournals) {
-                if (course.getIdCourse() == journal.getCourse().getIdCourse()) {
-                    course.setAssignable(true);
-                    break;
-                }
+        for (UserCoursesJournal journal : userCoursesJournals) {
+            if (course.getIdCourse() == journal.getCourse().getIdCourse()) {
+                course.setAssignable(true);
+                break;
             }
         }
     }
@@ -65,10 +63,18 @@ public class UserCoursesJournalServiceImpl implements UserCoursesJournalService 
     @Override
     public void countStudentsOnCourses(List<Course> courses) {
 
-        for(Course course : courses){
+        for (Course course : courses) {
             List<UserCoursesJournal> coursesJournal = userCoursesJournalRepository.findAllByCourse(course);
             course.setNumberOfStudents(coursesJournal.size());
         }
+    }
+
+    @Override
+    public void countStudentsOnCourse(Course course) {
+
+        List<UserCoursesJournal> coursesJournal = userCoursesJournalRepository.findAllByCourse(course);
+        course.setNumberOfStudents(coursesJournal.size());
+
     }
 
     @Override
@@ -76,7 +82,7 @@ public class UserCoursesJournalServiceImpl implements UserCoursesJournalService 
         List<UserCourseJournalDTO> userCourseJournalDTOS = new ArrayList<>();
         Course course = courseRepository.findByCourseName(courseName);
         List<UserCoursesJournal> userCoursesJournals = userCoursesJournalRepository.findAllByCourse(course);
-        for(UserCoursesJournal userCoursesJournal : userCoursesJournals){
+        for (UserCoursesJournal userCoursesJournal : userCoursesJournals) {
             UserInitialsDTO userInitialsDTO = UserInitialsDTOMapper.INSTANCE.userToUserInitialsDTO(userCoursesJournal.getUser());
             userCourseJournalDTOS.add(UserCourseJournalDTOMapper.INSTANCE.userCourseJournalToUserCourseJournalDTO(userCoursesJournal));
         }
