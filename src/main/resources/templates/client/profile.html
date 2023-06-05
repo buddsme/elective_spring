@@ -110,6 +110,30 @@
             color: red;
             text-decoration: underline;
         }
+
+        /*    */
+
+        .modal-content {
+            background-color: #8c909d;
+            color: #fff;
+        }
+
+        .modal-header {
+            border-bottom-color: #fff;
+        }
+
+        .modal-footer {
+            background-color: #8c909d;
+        }
+
+        .modal-title,
+        .modal-footer .btn-link {
+            color: #fff;
+        }
+
+        .modal[data-modal-color] .modal-footer .btn-link:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -316,26 +340,57 @@
                                     <div th:each="course : ${chunk}">
                                         <span th:if="${role.equalsIgnoreCase('Teacher')}">
                                             <h6><a class="teacher-link"
-                                               th:href="@{/main-page/profile/journal(courseName=${course.courseName})}"
-                                               th:text="${course.courseName}"></a></h6>
+                                                   th:href="@{/main-page/profile/journal(courseName=${course.courseName})}"
+                                                   th:text="${course.courseName}"></a></h6>
+                                            <div class="progress mb-3" style="height: 5px">
+                                                <div class="progress-bar bg-custom" role="progressbar"
+                                                     th:style="'width:' + ${course.progress} + '%'"
+                                                     th:aria-valuenow="${course.progress}" aria-valuemin="0"
+                                                     aria-valuemax="100">
+                                                </div>
+                                            </div>
                                         </span>
                                         <div th:if="${role.equalsIgnoreCase('Student')}">
-                                            <div class="d-flex">
-                                                <h6 th:if="${course.courseStatus.name() != 'FINISHED'}"
-                                                    th:text="${course.courseName}">
-                                                </h6>
+                                            <div>
                                                 <div th:if="${course.courseStatus.name() == 'FINISHED'}">
-                                                    <h6 th:text="${course.courseName}"></h6>
-                                                    <span class="text-secondary ms-2"
-                                                          th:text="'grade: ' + ${course.grade}"></span>
+                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                        <h6 th:text="${course.courseName}"></h6>
+                                                        <div class="text-secondary">
+                                                            <span th:text="'grade: ' + ${course.grade}"></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="ms-auto"
-                                                     th:if="${course.courseStatus.name() != 'FINISHED'}">
-                                                    <form th:action="@{/profile/cancel-course}" method="post">
-                                                        <input type="hidden" name="courseId"
-                                                               th:value="${course.idCourse}">
-                                                        <button type="submit" class="text-red">Cancel</button>
-                                                    </form>
+
+                                                <div
+                                                        th:if="${course.courseStatus.name() != 'FINISHED'}">
+                                                    <div class='d-flex justify-content-between'>
+                                                        <h6 th:text="${course.courseName}"></h6>
+                                                        <form th:action="@{/profile/cancel-course}" method="post">
+                                                            <input type="hidden" name="courseId" th:value="${course.idCourse}">
+                                                            <a href="#" data-target="#modalColor" data-toggle="modal" class="text-red">Cancel</a>
+
+                                                            <!-- Модальне вікно -->
+                                                            <div class="modal fade" id="modalColor" tabindex="-1" role="dialog" aria-labelledby="modalColorLabel" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h4 class="modal-title" id="modalColorLabel">Submit</h4>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>Are you sure to cancel the course?</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="submit" class="btn btn-link">Yes</button>
+                                                                            <button type="button" class="btn btn-link" data-dismiss="modal">No</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+
+
+
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -357,15 +412,15 @@
                         <div class="card h-100">
                             <div class="card-body">
                                 <span th:if="${role.equalsIgnoreCase('Teacher')}">
-                                    <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2"
+                                    <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-custom mr-2"
                                                                                   th:text="'Journals '"></i></h6>
                                 </span>
                                 <span th:if="${role.equalsIgnoreCase('Student')}">
-                                    <div class="row">
+                                    <div class="d-flex flex-row">
                                         <h6 class="d-flex align-items-center mb-3"><i
-                                                class="material-icons text-info mr-2" th:text="'Courses '"></i></h6>
+                                                class="material-icons text-custom mr-2" th:text="'Courses '"></i></h6>
                                         <div class="dropdown show mb-2">
-                                            <a class="btn btn-sm dropdown-toggle" href="#" role="button"
+                                            <a class="btn btn-sm dropdown-toggle ms-2" href="#" role="button"
                                                id="dropdownMenuLink2" data-toggle="dropdown"
                                                aria-haspopup="true" aria-expanded="false">Filter By...
                                             </a>
@@ -390,6 +445,14 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('body').on('click', '#btn-color-targets > .btn', function () {
+            var color = $(this).data('target-color');
+            $('#modalColor').attr('data-modal-color', color);
+        });
+    });
+</script>
 <script type="text/javascript">
 </script>
 </body>

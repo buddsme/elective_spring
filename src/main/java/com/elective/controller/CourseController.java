@@ -1,6 +1,7 @@
 package com.elective.controller;
 
 import com.elective.entity.Course;
+import com.elective.entity.Role;
 import com.elective.entity.Topic;
 import com.elective.entity.User;
 import com.elective.entity.dto.TopicDTO;
@@ -120,6 +121,9 @@ public class CourseController {
 
         int userId = userService.getUserIdByEmail(principal.getName());
         model.addAttribute("userId", userId);
+
+        Role userRole = userService.getUserById(userId).getRoles().get(0);
+        model.addAttribute("role", userRole.getRoleName());
 
         Course course = courseService.getCourseById(courseId);
         userCoursesJournalService.findUserAssignedCourse(userId, course);
