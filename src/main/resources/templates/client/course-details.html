@@ -239,10 +239,12 @@
                                         <input type="hidden" name="courseId" th:value="${course.idCourse}">
                                         <span th:if="${course.assignable}"><button type="button"
                                                 class="btn btn-light me-2">You have joined this course!</button>
-                                    </span>
-                                        <span th:unless="${course.assignable}"><button
+                                        </span>
+                                        <div th:if="${role.equalsIgnoreCase('Student')}">
+                                            <span th:unless="${course.assignable}"><button
                                                 type="submit" class="btn btn-primary">Assign</button>
-                                    </span>
+                                            </span>
+                                        </div>
                                     </form>
                                 </div>
                                 <div class="d-flex flex-row" sec:authorize="isAnonymous()">
