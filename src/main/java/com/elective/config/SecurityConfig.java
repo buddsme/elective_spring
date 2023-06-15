@@ -39,7 +39,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         String[] staticResources = {
-                "/", "/login**", "/register**", "/mainPage**"};
+                "/", "/login**", "/register**"};
 
 
         http

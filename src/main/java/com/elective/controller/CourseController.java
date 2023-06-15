@@ -37,6 +37,49 @@ public class CourseController {
         this.userCoursesJournalService = userCoursesJournalService;
     }
 
+    @GetMapping("/")
+    public ModelAndView entryPage(@RequestParam(required = false) String sort, @RequestParam(value = "topics", required = false) List<String> selectedTopics, Model model){
+        List<Course> courses;
+
+        boolean allFilter = false;
+        if(selectedTopics != null) {
+            for (String topic : selectedTopics) {
+                if (topic.equals("All")) {
+                    allFilter = true;
+                    break;
+                }
+            }
+        }
+
+        if(selectedTopics == null || allFilter){
+            courses = courseService.getAllCourses();
+            List<String> emptyTopicsFilters = new ArrayList<>();
+            model.addAttribute("selectedTopics", emptyTopicsFilters);
+        }else{
+            courses = courseService.filterByTopicsList(selectedTopics);
+        }
+
+        model.addAttribute("topics", topicService.getAllTopics());
+
+        userCoursesJournalService.countStudentsOnCourses(courses);
+        courseService.checkCoursesStatus(courses);
+
+        courses = courses.stream().filter(course -> !course.getCourseStatus().name().equals("EXPIRED")).collect(Collectors.toList());
+
+        if (sort != null) {
+            switch (sort) {
+                case "name(a-z)" -> courses.sort(Comparator.comparing(Course::getCourseName));
+                case "name(z-a)" -> courses.sort(Comparator.comparing(Course::getCourseName, Collections.reverseOrder()));
+                case "duration" -> courses.sort(Comparator.comparing(Course::getDuration));
+                case "number-of-students" -> courses.sort(Comparator.comparingInt(Course::getNumberOfStudents));
+                default -> {
+                }
+                //handle invalid sort parameter
+            }
+        }
+        model.addAttribute("courses", courses);
+        return new ModelAndView("main-page-not-authorized");
+    }
     @GetMapping("/main-page")
     public ModelAndView showMainPage(@RequestParam(required = false) String sort, @RequestParam(value = "topics", required = false) List<String> selectedTopics, Model model, Principal principal) {
         int userId = userService.getUserIdByEmail(principal.getName());
@@ -81,7 +124,7 @@ public class CourseController {
             }
         }
         model.addAttribute("courses", courses);
-        return new ModelAndView("main-page");
+        return new ModelAndView("main-page-authorized");
     }
 
     @PostMapping("/assign")
