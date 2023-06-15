@@ -120,9 +120,7 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> checkCoursesStatus(List<Course> courses) {
         for(Course course : courses){
             if(course.getDateEnd().plusDays(5).isBefore(LocalDate.now())){
-                courseRepository.deleteById(course.getIdCourse());
-                courses.remove(course);
-                break;
+                course.setCourseStatus(CourseStatus.EXPIRED);
             }
             else if(course.getDateStart().isBefore(LocalDate.now()) && course.getDateEnd().isAfter(LocalDate.now())){
                 course.setCourseStatus(CourseStatus.ONGOING);
@@ -134,8 +132,8 @@ public class CourseServiceImpl implements CourseService {
                 course.setCourseStatus(CourseStatus.FINISHED);
             }
         }
-        List<Course> updatedCourses = courseRepository.saveAll(courses);
-        return updatedCourses;
+        courseRepository.saveAll(courses);
+        return courses;
     }
 
     @Override

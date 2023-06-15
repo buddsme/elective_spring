@@ -352,7 +352,7 @@
                                         </span>
                                         <div th:if="${role.equalsIgnoreCase('Student')}">
                                             <div>
-                                                <div th:if="${course.courseStatus.name() == 'FINISHED'}">
+                                                <div th:if="${course.courseStatus.name() == 'FINISHED' or course.courseStatus.name() == 'EXPIRED'}">
                                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                                         <h6 th:text="${course.courseName}"></h6>
                                                         <div class="text-secondary">
@@ -362,7 +362,7 @@
                                                 </div>
 
                                                 <div
-                                                        th:if="${course.courseStatus.name() != 'FINISHED'}">
+                                                        th:if="${course.courseStatus.name() != 'FINISHED' and course.courseStatus.name() != 'EXPIRED'}">
                                                     <div class='d-flex justify-content-between'>
                                                         <h6 th:text="${course.courseName}"></h6>
                                                         <form th:action="@{/profile/cancel-course}" method="post">

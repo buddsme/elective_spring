@@ -36,7 +36,7 @@ public class AdminController {
 
     @GetMapping
     public ModelAndView showAdminPage() {
-        return new ModelAndView("administration/adminPage");
+        return new ModelAndView("administration/admin-page");
     }
 
     //teacher controller
@@ -50,13 +50,13 @@ public class AdminController {
             model.addAttribute("users", userService.getAllUsersByRole("STUDENT"));
             model.addAttribute("role", role);
         }
-        return new ModelAndView("administration/users/usersInfo");
+        return new ModelAndView("administration/users/users-info");
     }
 
     @GetMapping("/users/addUser")
     public ModelAndView addUserForm(@RequestParam("role") String role) {
 
-        ModelAndView mav = new ModelAndView("administration/users/addUser");
+        ModelAndView mav = new ModelAndView("administration/users/add-user");
         if (role.equals("teacher")) {
             User user = new User();
             mav.addObject("user", user);
@@ -93,7 +93,7 @@ public class AdminController {
 
     @GetMapping("/users/edit/{id}")
     public ModelAndView editUser(@PathVariable int id) {
-        ModelAndView mav = new ModelAndView("administration/users/editUser");
+        ModelAndView mav = new ModelAndView("administration/users/edit-user");
         mav.addObject("user", userService.getUserById(id));
         return mav;
     }
@@ -117,7 +117,7 @@ public class AdminController {
     }
 
     private ModelAndView getModelAndView(@PathVariable int id) {
-        ModelAndView mav = new ModelAndView("administration/adminPage");
+        ModelAndView mav = new ModelAndView("administration/admin-page");
 
         List<Role> roles = userService.getUserById(id).getRoles();
         for (Role userRoles : roles) {
@@ -141,7 +141,7 @@ public class AdminController {
         List<Topic> topics = topicService.getAllTopics();
         model.addAttribute("topics", topics);
 
-        return new ModelAndView("administration/courses/coursesInfo");
+        return new ModelAndView("administration/courses/courses-info");
     }
 
     @GetMapping("/courses/addCourse")
@@ -156,7 +156,7 @@ public class AdminController {
         List<Topic> topics = topicService.getAllTopics();
         model.addAttribute("topics", topics);
 
-        return new ModelAndView("administration/courses/addCourse");
+        return new ModelAndView("administration/courses/add-course");
     }
 
     @PostMapping("/courses/addCourse")
@@ -173,7 +173,7 @@ public class AdminController {
 
         List<Topic> topics = topicService.getAllTopics();
         model.addAttribute("topics", topics);
-        return new ModelAndView("administration/courses/editCourse");
+        return new ModelAndView("administration/courses/edit-course");
     }
 
     @PostMapping("/courses/edit/{id}")
@@ -196,7 +196,7 @@ public class AdminController {
         List<Topic> topics = topicService.getAllTopics();
         model.addAttribute("topics", topics);
 
-        return new ModelAndView("administration/topics/topicInfo");
+        return new ModelAndView("administration/topics/topic-info");
     }
 
     @GetMapping("/topics/add-topic")
@@ -205,7 +205,7 @@ public class AdminController {
         Topic topic = new Topic();
         model.addAttribute("topic", topic);
 
-        return new ModelAndView("administration/topics/addTopic");
+        return new ModelAndView("administration/topics/add-topic");
     }
 
     @PostMapping("/topics/add-topic")

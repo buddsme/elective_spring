@@ -30,4 +30,6 @@ public interface UserService {
     UserWithImageDTO setImagesForUser(UserDTO userDTO);
 
     void updateUserByUserDTO(UserWithImageDTO user);
+
+    User getUserByEmail(String email);
 }

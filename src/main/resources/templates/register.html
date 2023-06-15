@@ -66,7 +66,7 @@
                 <!--                <div class="text-center my-5">-->
                 <!--                    <img src="/assets/bus-icon.png" alt="" width="80" th:src="@{/assets/bus-icon.png}">-->
                 <!--                </div>-->
-                <div class="card shadow-lg mb-4">
+                <div class="card shadow-lg mb-2">
                     <div class="card-body p-5">
                         <h1 class="fs-4 card-title text-center fw-bold mb-4">Sign Up</h1>
                         <form method="POST" class="needs-validation" autocomplete="off" th:action="@{/register}"
@@ -127,19 +127,12 @@
                                 </button>
                             </div>
                             <p>
-                            <div th:if="${param.success}">
-                                <div class="alert alert-success">
-                                    You've successfully registered. You may now <a href="#" th:href="@{/sign-in}"
-                                                                                   class="text-dark">Sign In</a> into
-                                    System.
-                                </div>
-                            </div>
-                            <div th:if="${param.error}">
-                                <div class="alert alert-error"><span th:text="${errorMessage}"></span></div>
+                            <div class="mb-2" th:if="${param.error}">
+                                <div class="alert alert-danger text-center">Invalid email.</div>
                             </div>
                         </form>
                     </div>
-                    <div class="card-footer py-3 border-0">
+                    <div class="card-footer border-0">
                         <div class="text-center">
                             Already have an account? <a th:href="@{/sign-in}" class="text-dark">Login</a>
                         </div>

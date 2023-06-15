@@ -38,7 +38,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ModelAndView addUser(@ModelAttribute("user") User user) {
+    public ModelAndView addUser(@ModelAttribute("user") User user, Model model) {
+        if (userService.getUserByEmail(user.getEmail()) != null) {
+            User newUser = new User();
+            model.addAttribute("user", newUser);
+            return new ModelAndView("redirect:/register?error=true");
+        }
         userService.saveUser(user, 3);
         return new ModelAndView("redirect:/login");
     }
@@ -82,9 +87,9 @@ public class UserController {
             }
 
             List<List<Course>> chunkedCourses = getChunkedCourses(teacherCourses);
-            if(!chunkedCourses.isEmpty()){
+            if (!chunkedCourses.isEmpty()) {
                 model.addAttribute("chunkedCourses", chunkedCourses);
-            }else{
+            } else {
                 model.addAttribute("chunkedCourses", new ArrayList<List<Course>>());
             }
 
@@ -92,15 +97,23 @@ public class UserController {
             List<Course> studentCourses = courseService.getAllCoursesByStudentId(id);
 
             studentCourses = courseService.checkCoursesStatus(studentCourses);
-            if(filter == null){
+            if (filter == null) {
                 filter = "ALL";
             }
             if (!filter.equals("ALL")) {
-                CourseStatus filterStatus = CourseStatus.valueOf(filter);
-                studentCourses = studentCourses
-                        .stream()
-                        .filter(e -> e.getCourseStatus() == filterStatus)
-                        .collect(Collectors.toList());
+
+                if (!filter.equals("FINISHED")) {
+                    CourseStatus filterStatus = CourseStatus.valueOf(filter);
+                    studentCourses = studentCourses
+                            .stream()
+                            .filter(e -> e.getCourseStatus() == filterStatus)
+                            .collect(Collectors.toList());
+                } else {
+                    studentCourses = studentCourses
+                            .stream()
+                            .filter(e -> e.getCourseStatus() == CourseStatus.FINISHED || e.getCourseStatus() == CourseStatus.EXPIRED)
+                            .collect(Collectors.toList());
+                }
             }
 
             if (filter.equals("FINISHED") || filter.equals("ALL")) {
@@ -113,9 +126,9 @@ public class UserController {
 
             List<List<Course>> chunkedCourses = getChunkedCourses(studentCourses);
 
-            if(!chunkedCourses.isEmpty()){
+            if (!chunkedCourses.isEmpty()) {
                 model.addAttribute("chunkedCourses", chunkedCourses);
-            }else{
+            } else {
                 model.addAttribute("chunkedCourses", new ArrayList<List<Course>>());
             }
         }
@@ -165,7 +178,7 @@ public class UserController {
     }
 
     @PostMapping("/profile/cancel-course")
-    public ModelAndView deleteUserOnCourse(@RequestParam("courseId") int courseId, Principal principal){
+    public ModelAndView deleteUserOnCourse(@RequestParam("courseId") int courseId, Principal principal) {
         int userId = userService.getUserIdByEmail(principal.getName());
         userCoursesJournalService.deleteUserOnCourse(courseId, userId);
         return new ModelAndView("redirect:/main-page/profile?userId=" + userId);

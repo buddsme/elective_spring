@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class CourseController {
@@ -66,6 +67,8 @@ public class CourseController {
         userCoursesJournalService.countStudentsOnCourses(courses);
         courseService.checkCoursesStatus(courses);
 
+        courses = courses.stream().filter(course -> !course.getCourseStatus().name().equals("EXPIRED")).collect(Collectors.toList());
+
         if (sort != null) {
             switch (sort) {
                 case "name(a-z)" -> courses.sort(Comparator.comparing(Course::getCourseName));
@@ -78,13 +81,13 @@ public class CourseController {
             }
         }
         model.addAttribute("courses", courses);
-        return new ModelAndView("/mainPage");
+        return new ModelAndView("main-page");
     }
 
     @PostMapping("/assign")
     public ModelAndView assignOnCourse(@RequestParam("userId") int userId, @RequestParam("courseId") int courseId) {
         userCoursesJournalService.saveUserCourse(userId, courseId);
-        return new ModelAndView("redirect:/main-page");
+        return new ModelAndView("redirect:/main-page/course?courseId=" + courseId);
     }
 
     @GetMapping("/main-page/teacher/courses")
