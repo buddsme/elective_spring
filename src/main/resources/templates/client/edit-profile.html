@@ -235,6 +235,7 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="text" name="firstName" class="form-control"
+                                               required
                                                th:value="*{firstName}" th:field="*{firstName}">
                                     </div>
                                 </div>
@@ -245,6 +246,7 @@
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input type="text" name="secondName" class="form-control"
+                                               required
                                                th:value="*{secondName}" th:field="*{secondName}">
                                     </div>
                                 </div>
@@ -257,7 +259,7 @@
                                         <input type="text" class="form-control" th:value="*{phone}"
                                                required
                                                autofocus
-                                               pattern="^\+?3?8?(0[\s\.-]\d{2}[\s\.-]\d{3}[\s\.-]\d{2}[\s\.-]\d{2})$"
+                                               pattern="^\+380\d{3,-\s}\d{2,-\s}\d{2,-\s}\d{2}$"
                                                th:field="*{phone}"
                                                title="Last phone should match next format: +380 XX XXX XX XX">
                                     </div>

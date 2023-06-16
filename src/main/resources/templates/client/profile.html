@@ -260,7 +260,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div th:if="${role.equalsIgnoreCase('student') or role.equalsIgnoreCase('teacher')}" class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-body">
                         <div class="row mt-2">
@@ -387,9 +387,6 @@
                                                                 </div>
                                                             </div>
                                                         </form>
-
-
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -438,6 +435,28 @@
                                     </div>
                                 </span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${role.equalsIgnoreCase('admin')}" class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-body d-grid col-4 mx-auto">
+                        <div class="row mt-2">
+                            <a class="btn btn-primary" th:href="@{/admin/courses}" role="button">Edit Courses</a>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <a class="btn btn-primary" th:href="@{/admin/topics}" role="button">Edit Topics</a>
+
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <a class="btn btn-primary" th:href="@{/admin/users(role='teacher')}" role="button">Edit Teachers</a>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <a class="btn btn-primary" th:href="@{/admin/users(role='student')}" role="button">Edit Students</a>
                         </div>
                     </div>
                 </div>

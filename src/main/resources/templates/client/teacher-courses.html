@@ -161,6 +161,7 @@
                         <span th:if="${course.courseStatus.name().equalsIgnoreCase('not_begun')}" class="badge badge-soft-not-begun">Not Begun</span>
                         <span th:if="${course.courseStatus.name().equalsIgnoreCase('ongoing')}" class="badge badge-soft-ongoing">Ongoing</span>
                         <span th:if="${course.courseStatus.name().equalsIgnoreCase('finished')}" class="badge badge-soft-finished">Finished</span>
+                        <span th:if="${course.courseStatus.name().equalsIgnoreCase('expired')}" class="badge badge-soft-finished">Finished</span>
                     </div>
                     <div class="mt-2">
                         <span class="text-muted d-block mb-1"><i class="fa fa-hourglass-start" aria-hidden="true" th:text="' Start on ' + ${course.dateStart}"></i></span>

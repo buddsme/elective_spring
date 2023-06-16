@@ -9,7 +9,17 @@
           rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
           crossorigin="anonymous">
+    <style type="text/css">
+        .btn-primary {
+            background-color: #556f96 !important;
+            border: 1px solid #556f96 !important;
+            color: #fff !important;
+        }
 
+        .btn-primary:hover {
+            background-color: rgb(54, 73, 98) !important;
+        }
+    </style>
 </head>
 <body style="background: #e2e8f0">
 
@@ -36,14 +46,14 @@
 
 <div class="container">
     <div class="row mt-5">
-        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-            <div class="row">
-        <span th:if="${role == 'teacher'}">
-            <h1>Add New Teacher</h1>
-        </span>
+        <div class="col-lg-6 col-md-6 col-sm-6 container  card mt-2">
+            <div class="d-flex justify-content-center">
+                <span th:if="${role == 'teacher'}">
+                    <h1>Add New Teacher</h1>
+                </span>
                 <span th:if="${role == 'student'}">
-            <h1>Add New Student</h1>
-        </span>
+                    <h1>Add New Student</h1>
+                 </span>
             </div>
             <div class="card-body">
                 <form th:action="@{/admin/users/addUser}" th:object="${user}" method="POST"
@@ -89,7 +99,7 @@
 
                     <div>
                         <label for="image">Photo:</label>
-                        <input type="file" id="image" name="image" class="form-control-file"
+                        <input type="file" id="image" name="image" class="form-control-file mb-2"
                                accept="image/png, image/jpg, image/jpeg" th:field="*{image}">
                     </div>
 
